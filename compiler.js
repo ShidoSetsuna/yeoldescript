@@ -379,46 +379,50 @@ if (inputFile === 'all') {
 }
 
 // ── Single file ───────────────────────────────────────────────────────────────
-const inputExt = path.extname(inputFile);
-if (!EXTENSION_MAP[inputExt]) {
-  console.error(`❌  Unknown extension "${inputExt}". Known: ${Object.keys(EXTENSION_MAP).join(', ')}`);
-  process.exit(1);
-}
-const outputExt  = EXTENSION_MAP[inputExt];
-const outputArg  = args.find(a => !a.startsWith('--') && a !== inputFile);
-const outputFile = outputArg ?? inputFile.slice(0, -inputExt.length) + outputExt;
-
-function compileOnce() {
-  let src;
-  try { src = fs.readFileSync(inputFile, 'utf8'); }
-  catch { console.error(`❌  Cannot read "${inputFile}"`); return false; }
-
-  const { code, log } = transpile(src, verbose);
-
-  if (verbose && log.length) {
-    console.log('\n📖  Translations:');
-    log.forEach(l => console.log(l));
+// Guarded so that `yeoldescript all [--watch]` doesn't fall through here
+// and try to interpret the literal string "all" as a filename.
+if (inputFile !== 'all') {
+  const inputExt = path.extname(inputFile);
+  if (!EXTENSION_MAP[inputExt]) {
+    console.error(`❌  Unknown extension "${inputExt}". Known: ${Object.keys(EXTENSION_MAP).join(', ')}`);
+    process.exit(1);
   }
+  const outputExt  = EXTENSION_MAP[inputExt];
+  const outputArg  = args.find(a => !a.startsWith('--') && a !== inputFile);
+  const outputFile = outputArg ?? inputFile.slice(0, -inputExt.length) + outputExt;
 
-  fs.writeFileSync(outputFile, stampParchment(code, path.basename(inputFile), outputExt));
-  console.log(`✅  ${inputFile}  →  ${outputFile}`);
-  return true;
-}
+  const compileOnce = () => {
+    let src;
+    try { src = fs.readFileSync(inputFile, 'utf8'); }
+    catch { console.error(`❌  Cannot read "${inputFile}"`); return false; }
 
-if (watchMode) {
-  console.log(`👁️  Watching ${inputFile}... (Ctrl+C to stop)\n`);
-  compileOnce();
-  let bounce;
-  fs.watch(inputFile, () => {
-    clearTimeout(bounce);
-    bounce = setTimeout(() => { process.stdout.write('🔄  '); compileOnce(); }, 100);
-  });
-} else {
-  compileOnce();
-  if (shouldRun) {
-    const runner = ['.ts','.tsx'].includes(outputExt) ? `npx ts-node "${outputFile}"` : `node "${outputFile}"`;
-    console.log(`\n🏃  ${runner}\n` + '─'.repeat(60));
-    try { execSync(runner, { stdio: 'inherit' }); } catch {}
-    console.log('─'.repeat(60));
+    const { code, log } = transpile(src, verbose);
+
+    if (verbose && log.length) {
+      console.log('\n📖  Translations:');
+      log.forEach(l => console.log(l));
+    }
+
+    fs.writeFileSync(outputFile, stampParchment(code, path.basename(inputFile), outputExt));
+    console.log(`✅  ${inputFile}  →  ${outputFile}`);
+    return true;
+  };
+
+  if (watchMode) {
+    console.log(`👁️  Watching ${inputFile}... (Ctrl+C to stop)\n`);
+    compileOnce();
+    let bounce;
+    fs.watch(inputFile, () => {
+      clearTimeout(bounce);
+      bounce = setTimeout(() => { process.stdout.write('🔄  '); compileOnce(); }, 100);
+    });
+  } else {
+    compileOnce();
+    if (shouldRun) {
+      const runner = ['.ts','.tsx'].includes(outputExt) ? `npx ts-node "${outputFile}"` : `node "${outputFile}"`;
+      console.log(`\n🏃  ${runner}\n` + '─'.repeat(60));
+      try { execSync(runner, { stdio: 'inherit' }); } catch {}
+      console.log('─'.repeat(60));
+    }
   }
 }
