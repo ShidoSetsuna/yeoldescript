@@ -2,7 +2,7 @@
   "name": "yeoldescript",
   "displayName": "Ye Olde Script (ES1600) — The TSX Update",
   "description": "Transpiler + VS Code extension that lets you write JavaScript / TypeScript / TSX in 17th-century English. Forsooth.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "TheCrownedCouncilOfTC39",
   "author": "Valdemar Andreas (Shido Setsuna)",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "vscode": "^1.60.0"
   },
   "bin": {
-    "yeoldescript": "./compiler.js"
+    "yeoldescript": "compiler.js"
   },
   "main": "./extension.js",
   "files": [

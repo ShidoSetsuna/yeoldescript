@@ -314,13 +314,30 @@ if (!inputFile || inputFile === '--help') {
 }
 
 // ── Compile ALL ───────────────────────────────────────────────────────────────
+//
+// Walk the working directory recursively, picking up every Ye Olde
+// source file regardless of how deep it lives. Skips node_modules and
+// dot-folders (.git, .next, .vscode, etc.) so the walk stays fast and
+// never compiles files inside dependencies.
+function walkParchments(dir) {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...walkParchments(full));
+    } else if (Object.keys(EXTENSION_MAP).some(e => entry.name.endsWith(e))) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
 if (inputFile === 'all') {
-  const files = fs.readdirSync('.').filter(f => Object.keys(EXTENSION_MAP).some(e => f.endsWith(e)));
-  if (!files.length) { console.log('⚠️  No ancient parchments found.'); process.exit(0); }
-  console.log(`\n⚔️  Compiling ${files.length} parchment(s)...\n`);
-  for (const f of files) {
+  function compileOneOf(f) {
     const ext = path.extname(f);
     const outExt = EXTENSION_MAP[ext];
+    if (!outExt) return;
     const out = f.slice(0, -ext.length) + outExt;
     try {
       const { code } = transpile(fs.readFileSync(f, 'utf8'), verbose);
@@ -328,7 +345,37 @@ if (inputFile === 'all') {
       console.log(`  ✅  ${f}  →  ${out}`);
     } catch (e) { console.error(`  ❌  ${f}: ${e.message}`); }
   }
-  process.exit(0);
+
+  const files = walkParchments('.');
+  if (files.length) {
+    console.log(`\n⚔️  Compiling ${files.length} parchment(s)...\n`);
+    for (const f of files) compileOneOf(f);
+  } else if (!watchMode) {
+    console.log('⚠️  No ancient parchments found.');
+    process.exit(0);
+  }
+
+  if (watchMode) {
+    console.log(`\n👁️  Watching for changes... (Ctrl+C to stop)\n`);
+    const pending = new Map();
+    fs.watch('.', { recursive: true }, (_eventType, filename) => {
+      if (!filename) return;
+      // Skip node_modules, dot-folders, and anything not a Ye Olde source.
+      const parts = filename.split(path.sep);
+      if (parts.some(p => p === 'node_modules' || p.startsWith('.'))) return;
+      const ext = path.extname(filename);
+      if (!EXTENSION_MAP[ext]) return;
+      if (!fs.existsSync(filename)) return;          // ignore deletions
+      // Debounce per-file — editors often fire multiple events per save.
+      clearTimeout(pending.get(filename));
+      pending.set(filename, setTimeout(() => {
+        process.stdout.write('🔄  ');
+        compileOneOf(filename);
+      }, 100));
+    });
+  } else {
+    process.exit(0);
+  }
 }
 
 // ── Single file ───────────────────────────────────────────────────────────────
