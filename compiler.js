@@ -98,6 +98,7 @@ const ROYAL_DECREES = [
   [/\bWhateverThouWilt\b/g,              'any'],
   [/\bMysterious\b/g,                     'unknown'],
   [/\bNevereth\b/g,                       'never'],
+  [/\bNeverEth\b/g,                       'never'],   // alt spelling — used in example-types.parchment
 
   // ══════════════════════════════════════════════════════════════════════════
   // V. TYPESCRIPT — COMPLEX TYPES & UTILITIES

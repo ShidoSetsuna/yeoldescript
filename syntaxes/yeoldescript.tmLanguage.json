@@ -7,6 +7,8 @@
     { "include": "#comments" },
     { "include": "#strings" },
     { "include": "#jsx" },
+    { "include": "#function-definition" },
+    { "include": "#type-definition" },
     { "include": "#ts-types" },
     { "include": "#booleans-and-nulls" },
     { "include": "#imports-exports" },
@@ -22,6 +24,24 @@
     { "include": "#numbers" }
   ],
   "repository": {
+
+    "function-definition": {
+      "comment": "`Incantation foo(...)` — colour the function name. Works for both sync and async (`Henceforth Incantation foo`) since `Henceforth` is matched separately as a keyword.",
+      "match": "\\b(Incantation)\\s+([A-Za-z_$][A-Za-z0-9_$]*)",
+      "captures": {
+        "1": { "name": "keyword.declaration.function.yeolde" },
+        "2": { "name": "entity.name.function.yeolde" }
+      }
+    },
+
+    "type-definition": {
+      "comment": "`Covenant Foo {...}`, `Proclamation Bar = ...`, `HierarchyOfRank Baz` — colour the type name.",
+      "match": "\\b(Covenant|Proclamation|HierarchyOfRank)\\s+([A-Za-z_$][A-Za-z0-9_$]*)",
+      "captures": {
+        "1": { "name": "keyword.declaration.type.yeolde" },
+        "2": { "name": "entity.name.type.yeolde" }
+      }
+    },
 
     "directives": {
       "patterns": [
