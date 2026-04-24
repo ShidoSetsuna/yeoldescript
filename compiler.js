@@ -298,6 +298,17 @@ function stampParchment(code, inputFile, outputExt) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// PUBLIC API
+//
+// Exported so the VS Code extension (and any other tooling) can reuse the
+// transpiler logic without spawning a child process. The CLI block below
+// only runs when this file is invoked directly.
+// ─────────────────────────────────────────────────────────────────────────────
+module.exports = { transpile, stampParchment, walkParchments, EXTENSION_MAP };
+
+if (require.main !== module) return;
+
+// ─────────────────────────────────────────────────────────────────────────────
 // CLI
 // ─────────────────────────────────────────────────────────────────────────────
 

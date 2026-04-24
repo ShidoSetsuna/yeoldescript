@@ -2,16 +2,23 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 
+// Single source of truth — pull the real transpiler + extension map from
+// the CLI module so the extension and CLI stay in lockstep. No more
+// half-stale duplicate dictionaries.
+const { transpile, stampParchment, EXTENSION_MAP } = require('./compiler.js');
+
+const SUPPORTED_EXTS = Object.keys(EXTENSION_MAP);
+const LANGUAGE_IDS = ['yeoldescript', 'yeoldescript-ts', 'yeoldescript-tsx'];
+
 /**
  * Ye Olde Script VS Code Extension
- * Activateth when a .yeolde, .ye, or .parchment file is opened
+ * Activates when any .yeolde / .ye / .parchment / .scrollx / .illuminated
+ * file is opened.
  */
-
 function activate(context) {
-
   console.log('⚔️  Ye Olde Script hath been activated! Forsooth.');
 
-  // Show a greeting when a .yeolde file is opened for the first time
+  // First-run greeting
   const hasGreeted = context.globalState.get('yeolde.hasGreeted', false);
   if (!hasGreeted) {
     vscode.window.showInformationMessage(
@@ -29,164 +36,215 @@ function activate(context) {
     context.globalState.update('yeolde.hasGreeted', true);
   }
 
-  // ── COMMAND: Compile Parchment ─────────────────────────────────────────────
+  // ── COMMAND: Compile current file ─────────────────────────────────────────
   const compileCommand = vscode.commands.registerCommand('yeoldescript.compile', async () => {
     const editor = vscode.window.activeTextEditor;
-
     if (!editor) {
       vscode.window.showErrorMessage(
-        '❌ No active parchment detected! Open a .yeolde file first, thou scoundrel.'
+        '❌ No active parchment detected! Open a Ye Olde file first, thou scoundrel.'
       );
       return;
     }
+    await editor.document.save();
+    await compilePath(editor.document.fileName, { revealAfter: true });
+  });
 
-    const doc = editor.document;
-    const ext = path.extname(doc.fileName);
-
-    if (!['.yeolde', '.ye', '.parchment'].includes(ext)) {
-      vscode.window.showWarningMessage(
-        '⚠️ This doth not appear to be a Ye Olde Script file. ' +
-        'Only .yeolde, .ye, and .parchment files can be compiled.'
-      );
+  // ── COMMAND: Compile every Ye Olde file in the workspace ──────────────────
+  const compileAllCommand = vscode.commands.registerCommand('yeoldescript.compileAll', async () => {
+    const folders = vscode.workspace.workspaceFolders;
+    if (!folders || folders.length === 0) {
+      vscode.window.showErrorMessage('❌ No workspace open. Cannot compile all.');
       return;
     }
-
-    // Save the file first
-    await doc.save();
-
-    const inputPath  = doc.fileName;
-    const outputPath = inputPath.replace(/\.(yeolde|ye|parchment)$/, '.js');
-
-    try {
-      // Inline transpile (same logic as compiler.js)
-      let code = fs.readFileSync(inputPath, 'utf8');
-      code = transpile(code);
-      const stamped = stampParchment(code, path.basename(inputPath));
-      fs.writeFileSync(outputPath, stamped, 'utf8');
-
-      vscode.window.showInformationMessage(
-        `✅ Huzzah! Compiled to ${path.basename(outputPath)}`,
-        'Open Compiled File'
-      ).then(choice => {
-        if (choice === 'Open Compiled File') {
-          vscode.workspace.openTextDocument(outputPath)
-            .then(d => vscode.window.showTextDocument(d, vscode.ViewColumn.Beside));
-        }
-      });
-
-    } catch (err) {
-      vscode.window.showErrorMessage(
-        `💀 BURN THE SCRIPT! The foul error readeth: ${err.message}`
-      );
+    let total = 0;
+    let failed = 0;
+    for (const folder of folders) {
+      const files = walkSync(folder.uri.fsPath);
+      for (const f of files) {
+        const ok = await compilePath(f, { silent: true });
+        if (ok) total++; else failed++;
+      }
     }
+    vscode.window.showInformationMessage(
+      `⚔️  Compiled ${total} parchment(s)${failed ? ` (${failed} failed)` : ''}.`
+    );
   });
 
   // ── HOVER PROVIDER ─────────────────────────────────────────────────────────
-  // When you hover over ancient words, show their modern translation
-  const hoverProvider = vscode.languages.registerHoverProvider('yeoldescript', {
+  // Same provider, registered for all three Ye Olde language IDs so that
+  // hover tooltips work in .parchment and .scrollx files too — not just
+  // .yeolde / .ye.
+  const hoverProvider = {
     provideHover(document, position) {
-      const range = document.getWordRangeAtPosition(position, /[A-Za-z,\s]+/);
+      // Match multi-word tokens like "Alas, Shouldst" or "be as one with"
+      const range = document.getWordRangeAtPosition(position, /[A-Za-z][A-Za-z,\s]*[A-Za-z]/);
       if (!range) return;
       const word = document.getText(range).trim();
-
-      const translations = {
-        'Beholdeth':       '`let` — A mutable variable. Like your commitments.',
-        'Decree':          '`const` — An immutable constant. Like the King\'s word.',
-        'Incantation':     '`function` — Dark magic, formalized.',
-        'Shouldst':        '`if` — Conditional logic for those uncertain of fate.',
-        'Elsewise':        '`else` — The path not taken... until now.',
-        'Verily':          '`true` — Verily, this is true. No argument.',
-        'Nay':             '`false` — Nay. Absolutely not. Get out.',
-        'TemptFate':       '`try` — Walk boldly into danger.',
-        'Repent':          '`catch` — Beg forgiveness for thy runtime errors.',
-        'Bestow':          '`return` — Granteth a value to the caller.',
-        'Yeet':            '`throw` — Hurls an error into the abyss.',
-        'Nothingness':     '`null` — The void. The absence of all things.',
-        'Void':            '`undefined` — Similar to null, but more chaotic.',
-        'Forsooth':        '`debugger` — Stops everything so thou canst inspect the carnage.',
-        'Whilst':          '`while` — Loopeth, as the serf toils.',
-        'TownCrier':       '`console` — Your output to the terminal. Ring ring.',
-        'Henceforth':      '`async` — Because even in 1642, some tasks took time.',
-        'Awaiteth':        '`await` — Waiteth patiently for the async gods.',
-        'surpass':         '`>` — Greater than.',
-        'falleth below':   '`<` — Less than.',
-        'doth equal':      '`===` — Strict equality. No type coercion. The compiler hath standards.',
-        'be as one with':  '`===` — Same as doth equal, but more poetic.',
-        'and furthermore': '`&&` — Logical AND.',
-        'or perchance':    '`||` — Logical OR.',
-      };
-
-      const translation = translations[word];
-      if (!translation) return;
-
+      const meaning = HOVER_DICT[word];
+      if (!meaning) return;
       return new vscode.Hover(
-        new vscode.MarkdownString(
-          `**Ye Olde Script** ⚔️\n\n\`${word}\` → ${translation}`
-        )
+        new vscode.MarkdownString(`**Ye Olde Script** ⚔️\n\n\`${word}\` → ${meaning}`)
       );
-    }
-  });
+    },
+  };
 
-  context.subscriptions.push(compileCommand, hoverProvider);
+  const hoverDisposables = LANGUAGE_IDS.map(lang =>
+    vscode.languages.registerHoverProvider(lang, hoverProvider)
+  );
+
+  context.subscriptions.push(compileCommand, compileAllCommand, ...hoverDisposables);
 }
 
 function deactivate() {
   console.log('⚔️  Ye Olde Script hath been deactivated. The dark magic sleepeth.');
 }
 
-// ── TRANSPILER (same logic as compiler.js, inlined for extension use) ────────
-function transpile(code) {
-  return code
-    .replace(/\bAlas,\s+Shouldst\b/g,         'else if')
-    .replace(/\bdoth not equal\b/g,            '!==')
-    .replace(/\bdoth equal\b/g,                '===')
-    .replace(/\bbe as one with\b/g,            '===')
-    .replace(/\bsurpass(?:eth)?\b/g,           '>')
-    .replace(/\bfalleth below\b/g,             '<')
-    .replace(/\bno less than\b/g,              '>=')
-    .replace(/\bno more than\b/g,              '<=')
-    .replace(/\band furthermore\b/g,           '&&')
-    .replace(/\bor perchance\b/g,              '||')
-    .replace(/\bHenceforth\s+Incantation\b/g,  'async function')
-    .replace(/\bHenceforth\b/g,                'async')
-    .replace(/\bAwaiteth\b/g,                  'await')
-    .replace(/\bBeholdeth\b/g,                 'let')
-    .replace(/\bDecree\b/g,                    'const')
-    .replace(/\bProclameth\b/g,                'var')
-    .replace(/\bIncantation\b/g,               'function')
-    .replace(/\bShouldst\b/g,                  'if')
-    .replace(/\bElsewise\b/g,                  'else')
-    .replace(/\bPerchance\b/g,                 'if')
-    .replace(/\bWhilst\b/g,                    'while')
-    .replace(/\bTraverse\b/g,                  'for')
-    .replace(/\bTemptFate\b/g,                 'try')
-    .replace(/\bRepent\b/g,                    'catch')
-    .replace(/\bFinalleth\b/g,                 'finally')
-    .replace(/\bBestow\b/g,                    'return')
-    .replace(/\bYeet\b(.+?)\bunto\b[^;]+/g,   (_, t) => `throw ${t.trim()}`)
-    .replace(/\bYeet\b/g,                      'throw')
-    .replace(/\bVerily\b/g,                    'true')
-    .replace(/\bNay\b/g,                       'false')
-    .replace(/\bNothingness\b/g,               'null')
-    .replace(/\bVoid\b/g,                      'undefined')
-    .replace(/\bForsooth\b/g,                  'debugger')
-    .replace(/\bTownCrier\.bellow\b/g,         'console.log')
-    .replace(/\bTownCrier\.weep\b/g,           'console.warn')
-    .replace(/\bTownCrier\.mumble\b/g,         'console.log')
-    .replace(/\bTownCrier\.shriek\b/g,         'console.error')
-    .replace(/\bTownCrier\.whisper\b/g,        'console.debug')
-    .replace(/\bTownCrier\.proclaim\b/g,       'console.info');
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+/**
+ * Compile a single Ye Olde source file to its corresponding modern file.
+ * Output extension picked from EXTENSION_MAP, so .parchment → .ts and
+ * .scrollx → .tsx (no more hardcoded .js for everything).
+ */
+async function compilePath(inputPath, { silent = false, revealAfter = false } = {}) {
+  const ext = path.extname(inputPath);
+  const outExt = EXTENSION_MAP[ext];
+  if (!outExt) {
+    if (!silent) {
+      vscode.window.showWarningMessage(
+        `⚠️  "${path.basename(inputPath)}" is not a Ye Olde Script file. ` +
+        `Known extensions: ${SUPPORTED_EXTS.join(', ')}`
+      );
+    }
+    return false;
+  }
+
+  const outputPath = inputPath.slice(0, -ext.length) + outExt;
+
+  try {
+    const src = fs.readFileSync(inputPath, 'utf8');
+    const { code } = transpile(src);
+    fs.writeFileSync(outputPath, stampParchment(code, path.basename(inputPath), outExt), 'utf8');
+    if (!silent) {
+      const action = await vscode.window.showInformationMessage(
+        `✅ Huzzah! Compiled to ${path.basename(outputPath)}`,
+        'Open Compiled File'
+      );
+      if (revealAfter && action === 'Open Compiled File') {
+        const doc = await vscode.workspace.openTextDocument(outputPath);
+        await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
+      }
+    }
+    return true;
+  } catch (err) {
+    vscode.window.showErrorMessage(
+      `💀 BURN THE SCRIPT! The foul error readeth: ${err.message}`
+    );
+    return false;
+  }
 }
 
-function stampParchment(code, inputFile) {
-  const now = new Date();
-  return [
-    `// AUTO-GENERATED BY YE OLDE SCRIPT TRANSPILER v1.6.4.2`,
-    `// Source: ${inputFile}  |  Compiled: ${now.toUTCString()}`,
-    `// "Thou art reading machine-translated medieval JavaScript."`,
-    ``,
-    code
-  ].join('\n');
+/**
+ * Recursive directory walk, used by the "Compile All" command.
+ * Skips node_modules and dot-folders (.git, .next, etc.).
+ */
+function walkSync(dir) {
+  const out = [];
+  let entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); }
+  catch { return out; }
+  for (const entry of entries) {
+    if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...walkSync(full));
+    } else if (SUPPORTED_EXTS.some(e => entry.name.endsWith(e))) {
+      out.push(full);
+    }
+  }
+  return out;
 }
+
+// ─── Hover dictionary ──────────────────────────────────────────────────────
+// Subset of the full transpile dictionary, with friendlier explanations
+// for hover. Add more as the joke matures.
+const HOVER_DICT = {
+  // Variables
+  'Beholdeth':       '`let` — A mutable variable. Like thy commitments.',
+  'Decree':          '`const` — An immutable constant. Like the King\'s word.',
+  'Proclameth':      '`var` — Thou monster.',
+
+  // Functions
+  'Incantation':                '`function` — Dark magic, formalized.',
+  'Henceforth Incantation':     '`async function` — Async incantation.',
+  'Awaiteth':                   '`await` — Waiteth patiently for the async gods.',
+  'Bestow':                     '`return` — Granteth a value to the caller.',
+
+  // Control flow
+  'Shouldst':         '`if` — Conditional logic for those uncertain of fate.',
+  'Alas, Shouldst':   '`else if` — The Shakespearean else if.',
+  'Elsewise':         '`else` — The path not taken... until now.',
+  'Whilst':           '`while` — Loopeth, as the serf toils.',
+  'TemptFate':        '`try` — Walk boldly into danger.',
+  'Repent':           '`catch` — Beg forgiveness for thy runtime errors.',
+  'Finalleth':        '`finally` — Runs regardless. Justice is blind.',
+
+  // Literals
+  'Verily':       '`true` — Verily, this is true. No argument.',
+  'Nay':          '`false` — Nay. Absolutely not. Get out.',
+  'Nothingness':  '`null` — The void. The absence of all things.',
+  'Void':         '`undefined` — Similar to null, but more chaotic.',
+  'Forsooth':     '`debugger` — Stops everything so thou canst inspect the carnage.',
+
+  // Operators
+  'surpass':         '`>` — Greater than.',
+  'falleth below':   '`<` — Less than.',
+  'doth equal':      '`===` — Strict equality. No type coercion. The compiler hath standards.',
+  'be as one with':  '`===` — Same as doth equal, but more poetic.',
+  'doth not equal':  '`!==` — Strict inequality.',
+  'no less than':    '`>=` — Greater than or equal.',
+  'no more than':    '`<=` — Less than or equal.',
+  'and furthermore': '`&&` — Logical AND.',
+  'or perchance':    '`||` — Logical OR.',
+
+  // Modules
+  'Summon':                  '`import` — Bring forth a module.',
+  'hailing from':            '`from` — Specifies whence the module cometh.',
+  'ShareWithTheRealm':       '`export` — Make available to other parchments.',
+  'PresentToTheKingdom':     '`export default` — The chosen one.',
+
+  // Console
+  'TownCrier':           '`console` — Thy output to the terminal. Ring ring.',
+  'TownCrier.bellow':    '`console.log` — Plain logging.',
+  'TownCrier.weep':      '`console.warn` — A warning, gently sobbed.',
+  'TownCrier.shriek':    '`console.error` — BURN THE SCRIPT!',
+  'TownCrier.mumble':    '`console.log` — Quiet logging.',
+  'TownCrier.whisper':   '`console.debug` — Verbose mode only.',
+  'TownCrier.proclaim':  '`console.info` — For important announcements.',
+
+  // TypeScript
+  'Parchment':         '`string` — A scroll of text.',
+  'Tally':             '`number` — A counted thing.',
+  'TrueOrNay':         '`boolean` — A yes-or-no decree.',
+  'Naught':            '`void` — Returns nothing.',
+  'WhateverThouWilt':  '`any` — TypeScript escape hatch. Use sparingly.',
+  'Mysterious':        '`unknown` — Type-safe `any`. Inspect before use.',
+  'Nevereth':          '`never` — A function that never returns.',
+  'Multitude':         '`Array` — A list of things.',
+  'Oath':              '`Promise` — A pledge that may or may not be honored.',
+  'Ledger':            '`Record` — A keyed scroll.',
+  'Covenant':          '`interface` — A binding agreement on shape.',
+  'Proclamation':      '`type` — A type alias.',
+  'HierarchyOfRank':   '`enum` — Ordered choices.',
+  'PickThyFields':     '`Pick<T, K>` — Select fields from a type.',
+  'OmitHeresy':        '`Omit<T, K>` — Exclude fields from a type.',
+  'PartialScroll':     '`Partial<T>` — All fields optional.',
+  'RequiredByLaw':     '`Required<T>` — All fields required.',
+  'ReadOnlyScroll':    '`Readonly<T>` — All fields readonly.',
+  'disguiseth as':     '`as` — Type assertion.',
+  'bequeatheth':       '`extends` — Inherits from / extends.',
+  'the nature of':     '`typeof` — Type query.',
+  'the keys of':       '`keyof` — Get keys of a type.',
+};
 
 module.exports = { activate, deactivate };
