@@ -265,6 +265,146 @@ const ROYAL_DECREES = [
   [/\bTownCrier\.time\b/g,              'console.time'],
   [/\bTownCrier\.timeEndeth\b/g,        'console.timeEnd'],
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // XVII. HTML / JSX TAGS
+  //
+  // Each tag needs two patterns: opening (matches `<oldname` followed by
+  // space, `>`, or `/`), and closing (matches `</oldname>`). Order
+  // matters within tag names that share a prefix — e.g. h1..h6 uses
+  // distinct words so no overlap, but `inkStroke` (path) and
+  // `inkOutline` (stroke attr) intentionally don't share prefixes.
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // Document structure
+  [/<manuscript\b/g,        '<html'],     [/<\/manuscript>/g,        '</html>'],
+  [/<corpus\b/g,            '<body'],     [/<\/corpus>/g,            '</body>'],
+  [/<preamble\b/g,          '<head'],     [/<\/preamble>/g,          '</head>'],
+  [/<mainHall\b/g,          '<main'],     [/<\/mainHall>/g,          '</main>'],
+  [/<chapter\b/g,           '<section'],  [/<\/chapter>/g,           '</section>'],
+  [/<tome\b/g,              '<article'],  [/<\/tome>/g,              '</article>'],
+  [/<banner\b/g,            '<header'],   [/<\/banner>/g,            '</header>'],
+  [/<bootscroll\b/g,        '<footer'],   [/<\/bootscroll>/g,        '</footer>'],
+  [/<wayfinder\b/g,         '<nav'],      [/<\/wayfinder>/g,         '</nav>'],
+  [/<marginalia\b/g,        '<aside'],    [/<\/marginalia>/g,        '</aside>'],
+  [/<dwelling\b/g,          '<address'],  [/<\/dwelling>/g,          '</address>'],
+
+  // Block & inline content
+  [/<scroll\b/g,            '<div'],      [/<\/scroll>/g,            '</div>'],
+  [/<sliver\b/g,            '<span'],     [/<\/sliver>/g,            '</span>'],
+  [/<verse\b/g,             '<p'],        [/<\/verse>/g,             '</p>'],
+  [/<pilgrimage\b/g,        '<a'],        [/<\/pilgrimage>/g,        '</a>'],
+  [/<mighty\b/g,            '<strong'],   [/<\/mighty>/g,            '</strong>'],
+  [/<emphatic\b/g,          '<em'],       [/<\/emphatic>/g,          '</em>'],
+  [/<linebreak\s*\/?>/g,    '<br />'],
+  [/<horizontalDivider\s*\/?>/g, '<hr />'],
+
+  // Lists
+  [/<bulletScroll\b/g,      '<ul'],       [/<\/bulletScroll>/g,      '</ul>'],
+  [/<numberedScroll\b/g,    '<ol'],       [/<\/numberedScroll>/g,    '</ol>'],
+  [/<entry\b/g,             '<li'],       [/<\/entry>/g,             '</li>'],
+  [/<glossary\b/g,           '<dl'],      [/<\/glossary>/g,          '</dl>'],
+  [/<term\b/g,              '<dt'],       [/<\/term>/g,              '</dt>'],
+  [/<definition\b/g,        '<dd'],       [/<\/definition>/g,        '</dd>'],
+
+  // Headings (rank hierarchy)
+  [/<kingHeading\b/g,       '<h1'],       [/<\/kingHeading>/g,       '</h1>'],
+  [/<princeHeading\b/g,     '<h2'],       [/<\/princeHeading>/g,     '</h2>'],
+  [/<dukeHeading\b/g,       '<h3'],       [/<\/dukeHeading>/g,       '</h3>'],
+  [/<earlHeading\b/g,       '<h4'],       [/<\/earlHeading>/g,       '</h4>'],
+  [/<knightHeading\b/g,     '<h5'],       [/<\/knightHeading>/g,     '</h5>'],
+  [/<squireHeading\b/g,     '<h6'],       [/<\/squireHeading>/g,     '</h6>'],
+
+  // Forms
+  [/<petition\b/g,          '<form'],     [/<\/petition>/g,          '</form>'],
+  [/<quill\b/g,             '<input'],    [/<\/quill>/g,             '</quill'],   // input is self-closing; closing form just in case
+  [/<lever\b/g,             '<button'],   [/<\/lever>/g,             '</button>'],
+  [/<placard\b/g,           '<label'],    [/<\/placard>/g,           '</label>'],
+  [/<wideQuill\b/g,         '<textarea'], [/<\/wideQuill>/g,         '</textarea>'],
+  [/<menuOfChoices\b/g,     '<select'],   [/<\/menuOfChoices>/g,     '</select>'],
+  [/<optionEth\b/g,         '<option'],   [/<\/optionEth>/g,         '</option>'],
+
+  // Media
+  [/<painting\s*\/?>/g,     '<img />'],
+
+  // Figures
+  [/<portrait\b/g,          '<figure'],   [/<\/portrait>/g,          '</figure>'],
+  [/<portraitTitle\b/g,     '<figcaption'], [/<\/portraitTitle>/g,   '</figcaption>'],
+
+  // SVG
+  [/<inkCanvas\b/g,         '<svg'],      [/<\/inkCanvas>/g,         '</svg>'],
+  [/<inkStroke\b/g,         '<path'],     [/<\/inkStroke>/g,         '</path>'],
+  [/<inkBundle\b/g,         '<g'],        [/<\/inkBundle>/g,         '</g>'],
+  [/<inkLibrary\b/g,        '<defs'],     [/<\/inkLibrary>/g,        '</defs>'],
+  [/<inkBoundary\b/g,       '<clipPath'], [/<\/inkBoundary>/g,       '</clipPath>'],
+  [/<inkSquare\b/g,         '<rect'],     [/<\/inkSquare>/g,         '</rect>'],
+  [/<inkRing\b/g,           '<circle'],   [/<\/inkRing>/g,           '</circle>'],
+  [/<inkPolygon\b/g,        '<polygon'],  [/<\/inkPolygon>/g,        '</polygon>'],
+  [/<inkLine\b/g,           '<line'],     [/<\/inkLine>/g,           '</line>'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XVIII. JSX / HTML ATTRIBUTES
+  // (caste, uponBeingStruck, etc. live higher up in the JSX section)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // Common attributes
+  [/\bgenus=/g,                   'type='],
+  [/\bcalling=/g,                 'name='],
+  [/\bsigil=/g,                   'id='],
+  [/\bsealKey=/g,                 'key='],
+  [/\btreasure=/g,                'value='],
+  [/\bcompulsory(?=[\s>])/g,      'required'],     // boolean attr, no `=`
+  [/\bcompulsory=/g,              'required='],
+  [/\bstation=/g,                 'role='],
+  [/\bplacardFor=/g,              'htmlFor='],
+  [/\bcommand=/g,                 'action='],
+  [/\brite=/g,                    'method='],
+  [/\btongue=/g,                  'lang='],
+  [/\btooltip=/g,                 'title='],
+  [/\bflourish=/g,                'style='],
+  [/\bwherethrough=/g,            'target='],
+  [/\brelation=/g,                'rel='],
+
+  // ARIA
+  [/\bspeakAs=/g,                 'aria-label='],
+  [/\bspeakAsBy=/g,               'aria-labelledby='],
+  [/\binvisibleToHerald(?==|\s|>)/g, 'aria-hidden'],
+  [/\binvisibleToHerald=/g,       'aria-hidden='],
+  [/\bdescribedAsBy=/g,           'aria-describedby='],
+  [/\bcurrentlyAt=/g,             'aria-current='],
+
+  // Events (additional to onClick/onChange already up top)
+  [/\buponSubmission=/g,          'onSubmit='],
+  [/\buponKeystroke=/g,           'onKeyDown='],
+  [/\buponKeyRelease=/g,          'onKeyUp='],
+  [/\buponHovering=/g,            'onMouseEnter='],
+  [/\buponFleeing=/g,             'onMouseLeave='],
+  [/\buponGazing=/g,              'onFocus='],
+  [/\buponLookingAway=/g,         'onBlur='],
+  [/\buponScrolling=/g,           'onScroll='],
+  [/\buponLoading=/g,             'onLoad='],
+  [/\buponError=/g,               'onError='],
+
+  // Sizing — used by both HTML and SVG
+  [/\bbreadth=/g,                 'width='],
+  [/\bstature=/g,                 'height='],
+  [/\bspans=/g,                   'sizes='],
+
+  // Image (Next.js)
+  [/\bfillEntirely(?=[\s>])/g,    'fill'],         // boolean prop on <Image>
+  [/\burgent(?=[\s>])/g,          'priority'],     // boolean prop on <Image>
+
+  // SVG-specific
+  [/\binkFrame=/g,                'viewBox='],
+  [/\binkFill=/g,                 'fill='],
+  [/\binkOutline=/g,              'stroke='],
+  [/\binkOutlineWidth=/g,         'strokeWidth='],
+  [/\binkOutlineEnd=/g,           'strokeLinecap='],
+  [/\binkOutlineJoin=/g,          'strokeLinejoin='],
+  [/\binkFillRule=/g,             'fillRule='],
+  [/\binkClipRule=/g,             'clipRule='],
+  [/\bnamespaceFrom=/g,           'xmlns='],
+  [/\binkData=/g,                 'd='],
+
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

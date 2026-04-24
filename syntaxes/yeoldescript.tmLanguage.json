@@ -100,9 +100,14 @@
           "match": "<\\/([A-Za-z][A-Za-z0-9.]*)>"
         },
         {
-          "comment": "JSX props — medieval versions",
+          "comment": "JSX props with values — medieval versions",
           "name": "entity.other.attribute-name.yeolde",
-          "match": "\\b(caste|uponBeingStruck|uponMutation|uponSubmission|uponKeystroke|uponKeyRelease|uponGazing|uponLookingAway|uponHovering|uponFleeing|uponLoading|uponScrolling|uponError|imprisoned|prophecy|destination|provenance|inscription|tether)(?==)"
+          "match": "\\b(caste|uponBeingStruck|uponMutation|uponSubmission|uponKeystroke|uponKeyRelease|uponGazing|uponLookingAway|uponHovering|uponFleeing|uponLoading|uponScrolling|uponError|imprisoned|prophecy|destination|provenance|inscription|tether|genus|calling|sigil|sealKey|treasure|compulsory|station|placardFor|command|rite|tongue|tooltip|flourish|wherethrough|relation|speakAs|speakAsBy|invisibleToHerald|describedAsBy|currentlyAt|breadth|stature|spans|fillEntirely|urgent|inkFrame|inkFill|inkOutline|inkOutlineWidth|inkOutlineEnd|inkOutlineJoin|inkFillRule|inkClipRule|namespaceFrom|inkData)(?==)"
+        },
+        {
+          "comment": "Boolean JSX props — same words, no value attached",
+          "name": "entity.other.attribute-name.yeolde",
+          "match": "\\b(compulsory|urgent|fillEntirely|invisibleToHerald|imprisoned)(?=[\\s/>])"
         }
       ]
     },
