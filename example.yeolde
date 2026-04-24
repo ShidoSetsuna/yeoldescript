@@ -1,0 +1,131 @@
+// Ye Olde Script — example.yeolde
+// A demonstration of ES1600 syntax, as decreed by the TC39 Council of Elders.
+// Thou mayest run this parchment thusly:
+//   node compiler.js example.yeolde --run --verbose
+
+// ─── VARIABLE DECLARATIONS ────────────────────────────────────────────────────
+
+Beholdeth peasantName = "Bartholomew";
+Decree MAX_TURNIPS = 10;
+Beholdeth isWitch = Verily;
+Beholdeth currentTurnips = 3;
+Beholdeth nobleSuspicions = Nothingness;
+
+TownCrier.bellow("═══════════════════════════════════");
+TownCrier.bellow("  THE VILLAGE ASSESSMENT OF 1642   ");
+TownCrier.bellow("═══════════════════════════════════");
+
+// ─── FUNCTIONS (INCANTATIONS) ─────────────────────────────────────────────────
+
+Incantation judgeThyWealth(cropCount) {
+
+    Shouldst (cropCount surpass 5) {
+        TownCrier.bellow("Verily, thou art a nobleman of great stature!");
+        Bestow Verily;
+    }
+    Alas, Shouldst (cropCount be as one with 0) {
+        TownCrier.weep("Woe! Famine hath taken thee. To the stocks!");
+        Bestow Nay;
+    }
+    Elsewise {
+        TownCrier.mumble("Thou art but a humble serf. Keep hoeing, " + peasantName + ".");
+    }
+}
+
+Incantation assessVillage(name, turnips, suspectedWitch) {
+
+    TownCrier.bellow("\nAssessing citizen: " + name);
+    TownCrier.bellow("Turnips in possession: " + turnips);
+
+    Shouldst (suspectedWitch doth equal Verily) {
+        TownCrier.weep("⚠️  Warning: This citizen hath been flagged for witchcraft.");
+        TownCrier.weep("    Initiating standard duck-based verification protocol.");
+    }
+
+    Beholdeth wealthyEnough = judgeThyWealth(turnips);
+
+    Shouldst (wealthyEnough doth equal Verily) {
+        TownCrier.bellow("✅ " + name + " hath been cleared. A fine upstanding noble.");
+    } Elsewise {
+        TownCrier.bellow("❌ " + name + " hath been added to the tax list. As expected.");
+    }
+}
+
+// ─── LOOPS ────────────────────────────────────────────────────────────────────
+
+Beholdeth villagers = ["Bartholomew", "Etheldred", "Godfrey", "Mildburga"];
+Beholdeth villagerTurnips = [8, 0, 2, 6];
+
+TownCrier.bellow("\n📋 PROCESSING ALL VILLAGE CITIZENS...");
+
+Beholdeth i = 0;
+Whilst (i falleth below villagers.length) {
+    Beholdeth citizen = villagers[i];
+    Beholdeth crops   = villagerTurnips[i];
+    assessVillage(citizen, crops, Nay);
+    i = i + 1;
+}
+
+// ─── TRY / CATCH (TemptFate / Repent) ────────────────────────────────────────
+
+TownCrier.bellow("\n☠️  INITIATING WITCH TRIAL PROTOCOL...\n");
+
+TemptFate {
+
+    Perchance (isWitch doth equal Verily) {
+        Yeet peasantName unto the nearest body of water;
+    }
+
+    // This line shall not be reached if isWitch is Verily
+    TownCrier.bellow("Trial complete. No witches detected.");
+
+} Repent (darkMagic) {
+    TownCrier.shriek("BURN THE SCRIPT! The foul error readeth: " + darkMagic);
+    TownCrier.weep("The accused hath been yeeted into the river.");
+    TownCrier.weep("Science will determine the rest.");
+}
+
+// ─── COMPARISON OPERATORS ─────────────────────────────────────────────────────
+
+TownCrier.bellow("\n📊 ROYAL TREASURY REPORT:");
+
+Shouldst (currentTurnips surpass MAX_TURNIPS) {
+    TownCrier.bellow("🏆 Surplus detected! Thou art taxed accordingly.");
+} Alas, Shouldst (currentTurnips doth equal 0) {
+    TownCrier.bellow("💀 Empty coffers. The King is displeased.");
+} Alas, Shouldst (currentTurnips no less than 5) {
+    TownCrier.bellow("⚖️  Acceptable. Barely.");
+} Elsewise {
+    TownCrier.bellow("😤 Insufficient. Back to the fields, serf.");
+}
+
+// ─── NESTED INCANTATIONS ──────────────────────────────────────────────────────
+
+Incantation computeRoyalTax(income, isNoble) {
+
+    Incantation applyBracket(amount, rate) {
+        Bestow amount * rate;
+    }
+
+    Shouldst (isNoble doth equal Verily) {
+        // Nobles pay less. As is tradition.
+        Bestow applyBracket(income, 0.1);
+    } Elsewise {
+        // Peasants pay more. Also as is tradition.
+        Bestow applyBracket(income, 0.9);
+    }
+}
+
+Decree nobleTax  = computeRoyalTax(1000, Verily);
+Decree peasantTax = computeRoyalTax(1000, Nay);
+
+TownCrier.bellow("\n💰 Noble tax on 1000 turnips: "  + nobleTax);
+TownCrier.bellow("💰 Peasant tax on 1000 turnips: " + peasantTax);
+TownCrier.bellow("\n(The system is working exactly as intended.)");
+
+// ─── FINAL PROCLAMATION ───────────────────────────────────────────────────────
+
+TownCrier.bellow("\n═══════════════════════════════════");
+TownCrier.bellow("  ASSESSMENT COMPLETE. GOD SAVE   ");
+TownCrier.bellow("   THE COMPILER. LONG MAY IT RUN.  ");
+TownCrier.bellow("═══════════════════════════════════\n");

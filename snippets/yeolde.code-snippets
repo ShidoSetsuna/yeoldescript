@@ -1,0 +1,332 @@
+{
+
+  // ── VARIABLE DECLARATIONS ────────────────────────────────────────────────────
+
+  "Decree (const)": {
+    "prefix": "decree",
+    "body": ["Decree ${1:name} = ${2:value}"],
+    "description": "const — immutable as the King's law"
+  },
+  "Beholdeth (let)": {
+    "prefix": "beh",
+    "body": ["Beholdeth ${1:name} = ${2:value}"],
+    "description": "let — mutable, like a serf's loyalty"
+  },
+
+  // ── FUNCTIONS ────────────────────────────────────────────────────────────────
+
+  "Incantation (function)": {
+    "prefix": "inc",
+    "body": [
+      "Incantation ${1:name}(${2:params}) {",
+      "\t$0",
+      "\tBestow ${3:result}",
+      "}"
+    ],
+    "description": "function"
+  },
+  "Henceforth Incantation (async function)": {
+    "prefix": "hinc",
+    "body": [
+      "Henceforth Incantation ${1:name}(${2:params}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "async function"
+  },
+  "Arrow Incantation": {
+    "prefix": "arrow",
+    "body": ["(${1:params}) => ${2:result}"],
+    "description": "Arrow function. The peasant shorthand."
+  },
+  "Async Arrow Incantation": {
+    "prefix": "harrow",
+    "body": ["Henceforth (${1:params}) => {", "\t$0", "}"],
+    "description": "async arrow function"
+  },
+
+  // ── TYPESCRIPT TYPES ──────────────────────────────────────────────────────────
+
+  "Covenant (interface)": {
+    "prefix": "cov",
+    "body": [
+      "Covenant ${1:Name} {",
+      "\t${2:field}: ${3:Parchment}",
+      "}"
+    ],
+    "description": "interface"
+  },
+  "Proclamation (type alias)": {
+    "prefix": "proc",
+    "body": ["Proclamation ${1:Name} = ${2:Parchment}"],
+    "description": "type alias"
+  },
+  "HierarchyOfRank (enum)": {
+    "prefix": "hier",
+    "body": [
+      "HierarchyOfRank ${1:Name} {",
+      "\t${2:Member1},",
+      "\t${3:Member2},",
+      "}"
+    ],
+    "description": "enum"
+  },
+  "Props Covenant": {
+    "prefix": "covprops",
+    "body": [
+      "Covenant ${1:ComponentName}Attributes {",
+      "\t${2:children}?: React.ReactNode",
+      "\t${3:caste}?: Parchment",
+      "\tuponBeingStruck?: () => Naught",
+      "}"
+    ],
+    "description": "React component props interface"
+  },
+
+  // ── REACT COMPONENT ───────────────────────────────────────────────────────────
+
+  "React Component (full)": {
+    "prefix": "comp",
+    "body": [
+      "Covenant ${1:Name}Attributes {",
+      "\t${2:children}?: React.ReactNode",
+      "}",
+      "",
+      "Incantation ${1:Name}({ ${2:children} }: ${1:Name}Attributes) {",
+      "\tBestow (",
+      "\t\t<div caste=\"${3:container}\">",
+      "\t\t\t{${2:children}}",
+      "\t\t</div>",
+      "\t)",
+      "}",
+      "",
+      "PresentToTheKingdom ${1:Name}"
+    ],
+    "description": "Full React component with props and export default"
+  },
+  "React Component (simple)": {
+    "prefix": "scomp",
+    "body": [
+      "Incantation ${1:Name}() {",
+      "\tBestow (",
+      "\t\t<div caste=\"${2:container}\">",
+      "\t\t\t$0",
+      "\t\t</div>",
+      "\t)",
+      "}",
+      "",
+      "PresentToTheKingdom ${1:Name}"
+    ],
+    "description": "Simple React component"
+  },
+
+  // ── REACT HOOKS ───────────────────────────────────────────────────────────────
+
+  "useCrystalBall (useState)": {
+    "prefix": "crystal",
+    "body": ["Decree [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useCrystalBall<${2:Parchment}>(${3:initialValue})"],
+    "description": "useState hook"
+  },
+  "whenTheMoonRiseth (useEffect)": {
+    "prefix": "moon",
+    "body": [
+      "whenTheMoonRiseth(() => {",
+      "\t$0",
+      "}, [${1:deps}])"
+    ],
+    "description": "useEffect hook"
+  },
+  "whenTheMoonRiseth (mount only)": {
+    "prefix": "moononce",
+    "body": [
+      "whenTheMoonRiseth(() => {",
+      "\t$0",
+      "}, []) // Runs once, like a royal decree"
+    ],
+    "description": "useEffect with empty deps (mount only)"
+  },
+  "useParchmentScroll (useRef)": {
+    "prefix": "scroll",
+    "body": ["Decree ${1:ref} = useParchmentScroll<${2:HTMLDivElement}>(Nothingness)"],
+    "description": "useRef hook"
+  },
+  "remembereth (useMemo)": {
+    "prefix": "remember",
+    "body": [
+      "Decree ${1:value} = remembereth(() => {",
+      "\tBestow ${2:computation}",
+      "}, [${3:deps}])"
+    ],
+    "description": "useMemo hook"
+  },
+  "recallIncantation (useCallback)": {
+    "prefix": "recall",
+    "body": [
+      "Decree ${1:handler} = recallIncantation((${2:params}) => {",
+      "\t$0",
+      "}, [${3:deps}])"
+    ],
+    "description": "useCallback hook"
+  },
+  "consultTheOracle (useContext)": {
+    "prefix": "oracle",
+    "body": ["Decree ${1:value} = consultTheOracle(${2:Context})"],
+    "description": "useContext hook"
+  },
+  "createScrollContext (createContext)": {
+    "prefix": "ctx",
+    "body": [
+      "Decree ${1:MyContext} = createScrollContext<${2:Parchment}>(${3:Nothingness})"
+    ],
+    "description": "createContext"
+  },
+
+  // ── NEXT.JS ───────────────────────────────────────────────────────────────────
+
+  "use client directive": {
+    "prefix": "uclient",
+    "body": ["'this parchment doth run on the client'", ""],
+    "description": "'use client'"
+  },
+  "use server directive": {
+    "prefix": "userver",
+    "body": ["'this parchment doth run on the server'", ""],
+    "description": "'use server'"
+  },
+  "consultTheRoyalMap (useRouter)": {
+    "prefix": "router",
+    "body": ["Decree router = consultTheRoyalMap()"],
+    "description": "useRouter"
+  },
+  "whereAmI (usePathname)": {
+    "prefix": "path",
+    "body": ["Decree pathname = whereAmI()"],
+    "description": "usePathname"
+  },
+  "inscribeIntoStone (getStaticProps)": {
+    "prefix": "gsp",
+    "body": [
+      "ShareWithTheRealm Henceforth Incantation inscribeIntoStone() {",
+      "\t$0",
+      "\tBestow {",
+      "\t\tprops: { ${1:data} },",
+      "\t}",
+      "}"
+    ],
+    "description": "getStaticProps"
+  },
+  "fetchFromTheKingdomServer (getServerSideProps)": {
+    "prefix": "gssp",
+    "body": [
+      "ShareWithTheRealm Henceforth Incantation fetchFromTheKingdomServer() {",
+      "\t$0",
+      "\tBestow {",
+      "\t\tprops: { ${1:data} },",
+      "\t}",
+      "}"
+    ],
+    "description": "getServerSideProps"
+  },
+  "Next.js Page (App Router)": {
+    "prefix": "nextpage",
+    "body": [
+      "'this parchment doth run on the client'",
+      "",
+      "Summon { useCrystalBall } hailing from 'react'",
+      "",
+      "Covenant ${1:PageName}Attributes {",
+      "\tparams: { ${2:id}: Parchment }",
+      "}",
+      "",
+      "Incantation ${1:PageName}({ params }: ${1:PageName}Attributes) {",
+      "\tBestow (",
+      "\t\t<main caste=\"${3:page-container}\">",
+      "\t\t\t<h1>${4:Page Title}</h1>",
+      "\t\t\t$0",
+      "\t\t</main>",
+      "\t)",
+      "}",
+      "",
+      "PresentToTheKingdom ${1:PageName}"
+    ],
+    "description": "Full Next.js App Router page"
+  },
+  "Next.js Layout": {
+    "prefix": "nextlayout",
+    "body": [
+      "Covenant ${1:Layout}Attributes {",
+      "\tchildren: React.ReactNode",
+      "}",
+      "",
+      "Incantation ${1:Layout}({ children }: ${1:Layout}Attributes) {",
+      "\tBestow (",
+      "\t\t<html lang=\"en\">",
+      "\t\t\t<body>",
+      "\t\t\t\t{children}",
+      "\t\t\t</body>",
+      "\t\t</html>",
+      "\t)",
+      "}",
+      "",
+      "PresentToTheKingdom ${1:Layout}"
+    ],
+    "description": "Next.js layout component"
+  },
+
+  // ── IMPORTS ───────────────────────────────────────────────────────────────────
+
+  "Summon React (import React)": {
+    "prefix": "sumreact",
+    "body": ["Summon React, { ${1:useCrystalBall} } hailing from 'react'"],
+    "description": "import React"
+  },
+  "Summon from next/navigation": {
+    "prefix": "sumnav",
+    "body": ["Summon { consultTheRoyalMap, whereAmI } hailing from 'next/navigation'"],
+    "description": "import from next/navigation"
+  },
+
+  // ── CONTROL FLOW ──────────────────────────────────────────────────────────────
+
+  "Shouldst / Elsewise (if/else)": {
+    "prefix": "shood",
+    "body": [
+      "Shouldst (${1:condition}) {",
+      "\t$0",
+      "} Elsewise {",
+      "\t",
+      "}"
+    ],
+    "description": "if/else"
+  },
+  "TemptFate / Repent (try/catch)": {
+    "prefix": "tempt",
+    "body": [
+      "TemptFate {",
+      "\t$0",
+      "} Repent (darkMagic) {",
+      "\tTownCrier.shriek('BURN THE SCRIPT:', darkMagic)",
+      "}"
+    ],
+    "description": "try/catch"
+  },
+  "Whilst (while)": {
+    "prefix": "whilst",
+    "body": ["Whilst (${1:condition}) {", "\t$0", "}"],
+    "description": "while loop"
+  },
+
+  // ── EXPORTS ───────────────────────────────────────────────────────────────────
+
+  "PresentToTheKingdom (export default)": {
+    "prefix": "present",
+    "body": ["PresentToTheKingdom ${1:Component}"],
+    "description": "export default"
+  },
+  "ShareWithTheRealm (export)": {
+    "prefix": "share",
+    "body": ["ShareWithTheRealm Decree ${1:name} = ${2:value}"],
+    "description": "export const"
+  }
+
+}

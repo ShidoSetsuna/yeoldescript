@@ -1,0 +1,253 @@
+{
+  "name": "Ye Olde Script",
+  "scopeName": "source.yeolde",
+  "fileTypes": ["yeolde", "ye", "parchment", "scrollx", "illuminated"],
+  "patterns": [
+    { "include": "#directives" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#jsx" },
+    { "include": "#ts-types" },
+    { "include": "#booleans-and-nulls" },
+    { "include": "#imports-exports" },
+    { "include": "#nextjs" },
+    { "include": "#react-hooks" },
+    { "include": "#keywords-declaration" },
+    { "include": "#keywords-function" },
+    { "include": "#keywords-control" },
+    { "include": "#keywords-error" },
+    { "include": "#keywords-return" },
+    { "include": "#keywords-operators" },
+    { "include": "#town-crier" },
+    { "include": "#numbers" }
+  ],
+  "repository": {
+
+    "directives": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor.directive.yeolde string.quoted.single.yeolde",
+          "match": "'this parchment doth run on the (client|server)'"
+        }
+      ]
+    },
+
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.yeolde", "match": "//.*$" },
+        { "name": "comment.block.yeolde", "begin": "/\\*", "end": "\\*/" }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.yeolde",
+          "begin": "\"", "end": "\"",
+          "patterns": [{ "name": "constant.character.escape.yeolde", "match": "\\\\." }]
+        },
+        {
+          "name": "string.quoted.single.yeolde",
+          "begin": "'", "end": "'",
+          "patterns": [{ "name": "constant.character.escape.yeolde", "match": "\\\\." }]
+        },
+        {
+          "name": "string.template.yeolde",
+          "begin": "`", "end": "`",
+          "patterns": [
+            { "name": "constant.character.escape.yeolde", "match": "\\\\." },
+            { "name": "meta.template.expression.yeolde", "begin": "\\$\\{", "end": "\\}", "patterns": [{ "include": "$self" }] }
+          ]
+        }
+      ]
+    },
+
+    "jsx": {
+      "patterns": [
+        {
+          "comment": "JSX self-closing tags",
+          "name": "meta.tag.jsx.yeolde",
+          "match": "<([A-Za-z][A-Za-z0-9.]*)(\\s[^>]*)?\\/>"
+        },
+        {
+          "comment": "JSX opening tags",
+          "name": "meta.tag.jsx.open.yeolde",
+          "match": "<([A-Za-z][A-Za-z0-9.]*)(?=\\s|>)"
+        },
+        {
+          "comment": "JSX closing tags",
+          "name": "meta.tag.jsx.close.yeolde",
+          "match": "<\\/([A-Za-z][A-Za-z0-9.]*)>"
+        },
+        {
+          "comment": "JSX props — medieval versions",
+          "name": "entity.other.attribute-name.yeolde",
+          "match": "\\b(caste|uponBeingStruck|uponMutation|uponSubmission|uponKeystroke|uponKeyRelease|uponGazing|uponLookingAway|uponHovering|uponFleeing|uponLoading|uponScrolling|uponError|imprisoned|prophecy|destination|provenance|inscription|tether)(?==)"
+        }
+      ]
+    },
+
+    "ts-types": {
+      "patterns": [
+        {
+          "comment": "TypeScript primitive types (medieval)",
+          "name": "support.type.primitive.yeolde",
+          "match": "\\b(Parchment|Tally|TrueOrNay|Naught|WhateverThouWilt|Mysterious|NeverEth|Nevereth)\\b"
+        },
+        {
+          "comment": "TypeScript complex types (medieval)",
+          "name": "support.type.yeolde",
+          "match": "\\b(Multitude|Oath|Ledger|PartialScroll|RequiredByLaw|ReadOnlyScroll|PickThyFields|OmitHeresy|ExcludeThePeasants)\\b"
+        },
+        {
+          "comment": "TypeScript declarations",
+          "name": "keyword.declaration.type.yeolde",
+          "match": "\\b(Covenant|Proclamation|HierarchyOfRank)\\b"
+        },
+        {
+          "comment": "TypeScript modifiers",
+          "name": "keyword.other.modifier.yeolde",
+          "match": "\\b(Immutable|Concealed|Shielded|Exposed|Stationary|RoyallyAbstract|bequeatheth|abideth by|disguiseth as|the nature of|the keys of)\\b"
+        }
+      ]
+    },
+
+    "booleans-and-nulls": {
+      "patterns": [
+        { "name": "constant.language.boolean.true.yeolde",  "match": "\\bVerily\\b" },
+        { "name": "constant.language.boolean.false.yeolde", "match": "\\bNay\\b" },
+        { "name": "constant.language.null.yeolde",          "match": "\\bNothingness\\b" },
+        { "name": "constant.language.undefined.yeolde",     "match": "\\bVoid\\b" }
+      ]
+    },
+
+    "imports-exports": {
+      "patterns": [
+        {
+          "name": "keyword.control.import-export.yeolde",
+          "match": "\\b(PresentToTheKingdom|ShareWithTheRealm|Summon|hailing from)\\b"
+        }
+      ]
+    },
+
+    "nextjs": {
+      "patterns": [
+        {
+          "comment": "Next.js hooks",
+          "name": "support.function.nextjs.yeolde",
+          "match": "\\b(consultTheRoyalMap|whereAmI|readTheScroll|watchTheRoad)\\b"
+        },
+        {
+          "comment": "Next.js data fetching",
+          "name": "support.function.nextjs.datafetch.yeolde",
+          "match": "\\b(fetchFromTheKingdomServer|inscribeIntoStone|cartographTheKingdom|fetchFromTheRoyalVault)\\b"
+        },
+        {
+          "comment": "Next.js server functions",
+          "name": "support.function.nextjs.server.yeolde",
+          "match": "\\b(redirectToExile|notFoundInTheKingdom|royalMetadata|summonFromTheVault|readTheRoyalHeaders)\\b"
+        }
+      ]
+    },
+
+    "react-hooks": {
+      "patterns": [
+        {
+          "name": "support.function.react-hook.yeolde",
+          "match": "\\b(useCrystalBall|whenTheMoonRiseth|useParchmentScroll|consultTheOracle|remembereth|recallIncantation|useCouncilOfElders|forgeRef|createScrollContext|useLayoutSorcery|useImperativeScroll|useDeferredToil|useIdScroll)\\b"
+        },
+        {
+          "name": "support.class.react.yeolde",
+          "match": "\\b(fragmentOfReality|suspendThyBelief|createPortalgate)\\b"
+        }
+      ]
+    },
+
+    "keywords-declaration": {
+      "name": "keyword.declaration.yeolde",
+      "match": "\\b(Beholdeth|Decree|Proclameth)\\b"
+    },
+
+    "keywords-function": {
+      "patterns": [
+        {
+          "name": "keyword.declaration.function.yeolde",
+          "match": "\\b(Incantation|Henceforth)\\b"
+        },
+        {
+          "name": "keyword.control.async.yeolde",
+          "match": "\\bAwaiteth\\b"
+        }
+      ]
+    },
+
+    "keywords-control": {
+      "patterns": [
+        {
+          "name": "keyword.control.conditional.yeolde",
+          "match": "\\b(Shouldst|Elsewise|Perchance)\\b"
+        },
+        {
+          "name": "keyword.control.conditional.elseif.yeolde",
+          "match": "\\bAlas,\\s+Shouldst\\b"
+        },
+        {
+          "name": "keyword.control.loop.yeolde",
+          "match": "\\b(Whilst|Traverse|ForEachPeasant)\\b"
+        },
+        {
+          "name": "keyword.control.switch.yeolde",
+          "match": "\\b(SwitchThyFate|CaseOf|BreakFree|ContinueSuffering)\\b"
+        }
+      ]
+    },
+
+    "keywords-error": {
+      "name": "keyword.control.trycatch.yeolde",
+      "match": "\\b(TemptFate|Repent|Finalleth)\\b"
+    },
+
+    "keywords-return": {
+      "patterns": [
+        { "name": "keyword.control.return.yeolde",   "match": "\\bBestow\\b" },
+        { "name": "keyword.control.throw.yeolde",    "match": "\\bYeet\\b" },
+        { "name": "keyword.other.debugger.yeolde",   "match": "\\bForsooth\\b" }
+      ]
+    },
+
+    "keywords-operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.yeolde",
+          "match": "\\b(doth equal|doth not equal|be as one with|surpass|surpasseth|falleth below|no less than|no more than)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.yeolde",
+          "match": "\\b(and furthermore|or perchance)\\b"
+        },
+        {
+          "name": "keyword.operator.delete.yeolde",
+          "match": "\\bDeleteFromExistence\\b"
+        }
+      ]
+    },
+
+    "town-crier": {
+      "patterns": [
+        {
+          "name": "support.function.towncrier.yeolde",
+          "match": "\\bTownCrier\\.(bellow|weep|mumble|shriek|whisper|proclaim|tableOfContents|countThePeasants|time|timeEndeth)\\b"
+        },
+        {
+          "name": "support.class.towncrier.yeolde",
+          "match": "\\bTownCrier\\b"
+        }
+      ]
+    },
+
+    "numbers": {
+      "name": "constant.numeric.yeolde",
+      "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+    }
+  }
+}

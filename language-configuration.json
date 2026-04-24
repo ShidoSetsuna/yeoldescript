@@ -1,0 +1,39 @@
+{
+  "comments": {
+    "lineComment": "// Hark,",
+    "blockComment": ["/* Thus spake the coder:", "...and so it was written. */"]
+  },
+  "brackets": [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
+  "autoClosingPairs": [
+    { "open": "{", "close": "}" },
+    { "open": "[", "close": "]" },
+    { "open": "(", "close": ")" },
+    { "open": "\"", "close": "\"" },
+    { "open": "'", "close": "'" }
+  ],
+  "surroundingPairs": [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"],
+    ["\"", "\""],
+    ["'", "'"]
+  ],
+  "wordPattern": "[a-zA-Z_$][a-zA-Z0-9_$]*",
+  "indentationRules": {
+    "increaseIndentPattern": "^.*\\{[^}\"']*$",
+    "decreaseIndentPattern": "^\\s*\\}"
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*// Hark,.*$",
+      "action": {
+        "indent": "none",
+        "appendText": "// Hark, "
+      }
+    }
+  ]
+}

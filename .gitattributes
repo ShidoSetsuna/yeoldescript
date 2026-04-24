@@ -1,0 +1,30 @@
+# ══════════════════════════════════════════════════════════════════
+# .gitattributes — Ye Olde Script Language Declarations
+#
+# This file instructs GitHub's Linguist (the language detector)
+# to recognize our medieval file extensions.
+#
+# ══════════════════════════════════════════════════════════════════
+
+# Ye Olde Script  →  treated as JavaScript for highlighting
+*.yeolde    linguist-language=JavaScript
+*.ye        linguist-language=JavaScript
+
+# Parchment  →  treated as TypeScript
+*.parchment linguist-language=TypeScript
+
+# Scrollx (Illuminated Manuscripts)  →  treated as TSX
+*.scrollx      linguist-language=TSX
+*.illuminated  linguist-language=TSX
+
+# Tell Linguist these are NOT vendor/generated files
+*.yeolde    linguist-detectable=true
+*.ye        linguist-detectable=true
+*.parchment linguist-detectable=true
+*.scrollx   linguist-detectable=true
+
+# Compiled output should NOT count toward language stats
+*.tsx       linguist-generated=true
+*.js        linguist-generated=true
+# ^^^ ONLY add this if your .tsx/.js files are entirely compiler output.
+#     Comment these out if you have hand-written .tsx files too.

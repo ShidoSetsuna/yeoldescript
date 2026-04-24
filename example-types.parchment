@@ -1,0 +1,85 @@
+// ─── global.d.parchment ──────────────────────────────────────────────────────
+// Global type declarations for thy Next.js project.
+// These are the sacred covenants that bind the entire kingdom together.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Environment Variables ────────────────────────────────────────────────────
+
+Covenant ProcessEnv {
+  NODE_ENV:               'development' | 'production' | 'test'
+  NEXT_PUBLIC_API_URL:    Parchment
+  DATABASE_URL:           Parchment
+  SECRET_KEY:             Parchment
+}
+
+// ── Common Utility Types ─────────────────────────────────────────────────────
+
+Proclamation MaybeNought<T> = T | Nothingness
+Proclamation MaybeVoid<T>   = T | Void
+Proclamation MaybeEither<T> = T | Nothingness | Void
+Proclamation NonEmpty<T>    = T extends Parchment ? (T extends '' ? NeverEth : T) : T
+
+// ── API Response shapes ───────────────────────────────────────────────────────
+
+Covenant ApiResponse<T> {
+  data:       T
+  status:     Tally
+  message:    Parchment
+  success:    TrueOrNay
+}
+
+Covenant ApiError {
+  code:       Tally
+  message:    Parchment
+  details?:   WhateverThouWilt
+}
+
+Covenant PaginatedResponse<T> {
+  items:      Multitude<T>
+  total:      Tally
+  page:       Tally
+  pageSize:   Tally
+  hasMore:    TrueOrNay
+}
+
+// ── Server Action Return Types ───────────────────────────────────────────────
+
+Covenant ActionResult<T = Void> {
+  success:    TrueOrNay
+  data?:      T
+  error?:     Parchment
+}
+
+// ── React Component Utilities ────────────────────────────────────────────────
+
+Proclamation WithCaste<T> = T & { caste?: Parchment }
+Proclamation WithHeirs<T> = T & { children?: React.ReactNode }
+Proclamation WithRef<T, E = HTMLDivElement> = T & { tether?: React.Ref<E> }
+
+// ── Next.js Page Props ───────────────────────────────────────────────────────
+
+Covenant PageAttributes {
+  params:       Ledger<Parchment, Parchment>
+  searchParams?: Ledger<Parchment, Parchment | Multitude<Parchment>>
+}
+
+// ── Common Domain Types (example: a village management app) ──────────────────
+
+Proclamation VillageId = Parchment
+Proclamation PeasantId = Tally
+
+HierarchyOfRank PeasantStatus {
+  Noble    = 'NOBLE',
+  Serf     = 'SERF',
+  Witch    = 'WITCH',
+  Unknown  = 'UNKNOWN',
+}
+
+HierarchyOfRank GuildType {
+  Blacksmith   = 'BLACKSMITH',
+  Farmer       = 'FARMER',
+  TownCrier    = 'TOWNCRIER',
+  Wizard       = 'WIZARD',   // HR flag: monitor closely
+  Knight       = 'KNIGHT',
+  Merchant     = 'MERCHANT',
+}

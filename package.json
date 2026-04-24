@@ -1,0 +1,117 @@
+{
+  "name": "yeoldescript",
+  "displayName": "Ye Olde Script (ES1600) — The TSX Update",
+  "description": "Transpiler + VS Code extension that lets you write JavaScript / TypeScript / TSX in 17th-century English. Forsooth.",
+  "version": "2.0.0",
+  "publisher": "TheCrownedCouncilOfTC39",
+  "author": "Valdemar Andreas (Shido Setsuna)",
+  "license": "MIT",
+  "homepage": "https://github.com/ShidoSetsuna/yeoldescript#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShidoSetsuna/yeoldescript.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ShidoSetsuna/yeoldescript/issues"
+  },
+  "engines": {
+    "node": ">=18",
+    "vscode": "^1.60.0"
+  },
+  "bin": {
+    "yeoldescript": "./compiler.js"
+  },
+  "main": "./extension.js",
+  "files": [
+    "compiler.js",
+    "extension.js",
+    "language-configuration.json",
+    "syntaxes/",
+    "snippets/"
+  ],
+  "categories": ["Programming Languages", "Snippets", "Other"],
+  "keywords": [
+    "javascript",
+    "typescript",
+    "tsx",
+    "react",
+    "nextjs",
+    "transpiler",
+    "compiler",
+    "cli",
+    "medieval",
+    "shakespeare",
+    "joke-language",
+    "esoteric"
+  ],
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "yeoldescript",
+        "aliases": ["Ye Olde Script", "yeolde", "ES1600"],
+        "extensions": [".yeolde", ".ye"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "yeoldescript-ts",
+        "aliases": ["Ye Olde Script (TypeScript)", "parchment"],
+        "extensions": [".parchment"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "yeoldescript-tsx",
+        "aliases": ["Ye Olde Script (TSX)", "scrollx", "illuminated"],
+        "extensions": [".scrollx", ".illuminated"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "yeoldescript",
+        "scopeName": "source.yeolde",
+        "path": "./syntaxes/yeoldescript.tmLanguage.json"
+      },
+      {
+        "language": "yeoldescript-ts",
+        "scopeName": "source.yeolde",
+        "path": "./syntaxes/yeoldescript.tmLanguage.json"
+      },
+      {
+        "language": "yeoldescript-tsx",
+        "scopeName": "source.yeolde",
+        "path": "./syntaxes/yeoldescript.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.html": "html",
+          "meta.embedded.block.css": "css"
+        }
+      }
+    ],
+    "snippets": [
+      { "language": "yeoldescript",     "path": "./snippets/yeolde.code-snippets" },
+      { "language": "yeoldescript-ts",  "path": "./snippets/yeolde.code-snippets" },
+      { "language": "yeoldescript-tsx", "path": "./snippets/yeolde.code-snippets" }
+    ],
+    "commands": [
+      {
+        "command": "yeoldescript.compile",
+        "title": "⚔️  Compile Parchment → Modern JS/TS",
+        "category": "Ye Olde Script"
+      },
+      {
+        "command": "yeoldescript.compileAll",
+        "title": "⚔️  Compile ALL Parchments in Workspace",
+        "category": "Ye Olde Script"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceExtname == .yeolde || resourceExtname == .ye || resourceExtname == .parchment || resourceExtname == .scrollx || resourceExtname == .illuminated",
+          "command": "yeoldescript.compile",
+          "group": "yeolde"
+        }
+      ]
+    }
+  }
+}
