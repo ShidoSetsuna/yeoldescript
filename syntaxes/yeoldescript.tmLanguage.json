@@ -85,19 +85,23 @@
     "jsx": {
       "patterns": [
         {
-          "comment": "JSX self-closing tags",
-          "name": "meta.tag.jsx.yeolde",
-          "match": "<([A-Za-z][A-Za-z0-9.]*)(\\s[^>]*)?\\/>"
-        },
-        {
-          "comment": "JSX opening tags",
+          "comment": "JSX opening tags — capture the name so the theme's entity.name.tag colour applies (the wrapping meta.tag scope alone usually only colours the angle brackets).",
           "name": "meta.tag.jsx.open.yeolde",
-          "match": "<([A-Za-z][A-Za-z0-9.]*)(?=\\s|>)"
+          "match": "(<)([A-Za-z][A-Za-z0-9.]*)(?=\\s|>|/)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.yeolde" },
+            "2": { "name": "entity.name.tag.yeolde" }
+          }
         },
         {
           "comment": "JSX closing tags",
           "name": "meta.tag.jsx.close.yeolde",
-          "match": "<\\/([A-Za-z][A-Za-z0-9.]*)>"
+          "match": "(</)([A-Za-z][A-Za-z0-9.]*)(>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.yeolde" },
+            "2": { "name": "entity.name.tag.yeolde" },
+            "3": { "name": "punctuation.definition.tag.end.yeolde" }
+          }
         },
         {
           "comment": "JSX props with values — medieval versions",
