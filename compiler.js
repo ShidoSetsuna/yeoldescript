@@ -295,8 +295,8 @@ const ROYAL_DECREES = [
   [/<pilgrimage\b/g,        '<a'],        [/<\/pilgrimage>/g,        '</a>'],
   [/<mighty\b/g,            '<strong'],   [/<\/mighty>/g,            '</strong>'],
   [/<emphatic\b/g,          '<em'],       [/<\/emphatic>/g,          '</em>'],
-  [/<linebreak\s*\/?>/g,    '<br />'],
-  [/<horizontalDivider\s*\/?>/g, '<hr />'],
+  [/<linebreak\b/g,         '<br'],        // void; caller closes with />
+  [/<horizontalDivider\b/g, '<hr'],
 
   // Lists
   [/<bulletScroll\b/g,      '<ul'],       [/<\/bulletScroll>/g,      '</ul>'],
@@ -324,7 +324,7 @@ const ROYAL_DECREES = [
   [/<optionEth\b/g,         '<option'],   [/<\/optionEth>/g,         '</option>'],
 
   // Media
-  [/<painting\s*\/?>/g,     '<img />'],
+  [/<painting\b/g,          '<img'],
 
   // Figures
   [/<portrait\b/g,          '<figure'],   [/<\/portrait>/g,          '</figure>'],
