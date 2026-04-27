@@ -7,8 +7,9 @@ node_modules/
 !compiler.js
 !extension.js
 
-# npm pack output
+# build artifacts
 *.tgz
+*.vsix
 
 # OS noise
 .DS_Store

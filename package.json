@@ -1,9 +1,11 @@
 {
   "name": "yeoldescript",
-  "displayName": "Ye Olde Script (ES1600) — The TSX Update",
+  "displayName": "Ye Olde Script (ES1600)",
   "description": "Transpiler + VS Code extension that lets you write JavaScript / TypeScript / TSX in 17th-century English. Forsooth.",
-  "version": "2.2.2",
-  "publisher": "TheCrownedCouncilOfTC39",
+  "version": "2.2.3",
+  "publisher": "ShidoSetsuna",
+  "icon": "assets/logo.png",
+  "logo": "assets/logo.png",
   "author": "Valdemar Andreas (Shido Setsuna)",
   "license": "MIT",
   "homepage": "https://github.com/ShidoSetsuna/yeoldescript#readme",
@@ -27,9 +29,17 @@
     "extension.js",
     "language-configuration.json",
     "syntaxes/",
-    "snippets/"
+    "snippets/",
+    "assets/",
+    "LICENSE.md",
+    "README.md",
+    "LEXICON.md"
   ],
-  "categories": ["Programming Languages", "Snippets", "Other"],
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
   "keywords": [
     "javascript",
     "typescript",
@@ -49,20 +59,39 @@
     "languages": [
       {
         "id": "yeoldescript",
-        "aliases": ["Ye Olde Script", "yeolde", "ES1600"],
-        "extensions": [".yeolde", ".ye"],
+        "aliases": [
+          "Ye Olde Script",
+          "yeolde",
+          "ES1600"
+        ],
+        "extensions": [
+          ".yeolde",
+          ".ye"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
         "id": "yeoldescript-ts",
-        "aliases": ["Ye Olde Script (TypeScript)", "parchment"],
-        "extensions": [".parchment"],
+        "aliases": [
+          "Ye Olde Script (TypeScript)",
+          "parchment"
+        ],
+        "extensions": [
+          ".parchment"
+        ],
         "configuration": "./language-configuration.json"
       },
       {
         "id": "yeoldescript-tsx",
-        "aliases": ["Ye Olde Script (TSX)", "scrollx", "illuminated"],
-        "extensions": [".scrollx", ".illuminated"],
+        "aliases": [
+          "Ye Olde Script (TSX)",
+          "scrollx",
+          "illuminated"
+        ],
+        "extensions": [
+          ".scrollx",
+          ".illuminated"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -88,9 +117,18 @@
       }
     ],
     "snippets": [
-      { "language": "yeoldescript",     "path": "./snippets/yeolde.code-snippets" },
-      { "language": "yeoldescript-ts",  "path": "./snippets/yeolde.code-snippets" },
-      { "language": "yeoldescript-tsx", "path": "./snippets/yeolde.code-snippets" }
+      {
+        "language": "yeoldescript",
+        "path": "./snippets/yeolde.code-snippets"
+      },
+      {
+        "language": "yeoldescript-ts",
+        "path": "./snippets/yeolde.code-snippets"
+      },
+      {
+        "language": "yeoldescript-tsx",
+        "path": "./snippets/yeolde.code-snippets"
+      }
     ],
     "commands": [
       {
@@ -113,5 +151,8 @@
         }
       ]
     }
+  },
+  "dependencies": {
+    "@vscode/vsce": "^3.9.1"
   }
 }
