@@ -242,6 +242,15 @@ being honest about it.
 
 ---
 
+## ☕ Support
+
+If Ye Olde Script hath brought thee mirth (or, somehow, utility), thou
+mayst buy me a coffee at **[ko-fi.com/shidosetsuna](https://ko-fi.com/shidosetsuna)**.
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Buy_me_a_coffee-red?logo=ko-fi&logoColor=white)](https://ko-fi.com/shidosetsuna)
+
+---
+
 ## 📜 License
 
 MIT — see [LICENSE.md](./LICENSE.md).
