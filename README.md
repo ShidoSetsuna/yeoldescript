@@ -21,6 +21,10 @@ is now `'this parchment doth run on the client'`. Behold thy bundle.
 
 ### As a VS Code extension (syntax highlighting, hover docs, snippets)
 
+🏪 **[Install from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ShidoSetsuna.yeoldescript)**
+
+Or from the command line:
+
 ```
 code --install-extension ShidoSetsuna.yeoldescript
 ```
