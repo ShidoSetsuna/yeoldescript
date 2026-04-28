@@ -3,83 +3,93 @@
 // These are the sacred covenants that bind the entire kingdom together.
 // ─────────────────────────────────────────────────────────────────────────────
 
+
 // ── Environment Variables ────────────────────────────────────────────────────
 
 Covenant ProcessEnv {
-  NODE_ENV:               'development' | 'production' | 'test'
-  NEXT_PUBLIC_API_URL:    Parchment
-  DATABASE_URL:           Parchment
-  SECRET_KEY:             Parchment
+  NODE_ENV:               'development' | 'production' | 'test' endeth
+  NEXT_PUBLIC_API_URL:    Parchment endeth
+  DATABASE_URL:           Parchment endeth
+  SECRET_KEY:             Parchment endeth
 }
+
 
 // ── Common Utility Types ─────────────────────────────────────────────────────
 
-Proclamation MaybeNought<T> = T | Nothingness
-Proclamation MaybeVoid<T>   = T | Void
-Proclamation MaybeEither<T> = T | Nothingness | Void
-Proclamation NonEmpty<T>    = T extends Parchment ? (T extends '' ? NeverEth : T) : T
+Proclamation MaybeNought<T>  art T | Nothingness endeth
+Proclamation MaybeVoid<T>    art T | Void endeth
+Proclamation MaybeEither<T>  art T | Nothingness | Void endeth
+Proclamation NonEmpty<T>     art T bequeatheth Parchment
+  dothQuestionThyExistence (T bequeatheth '' dothQuestionThyExistence NeverEth : T)
+  : T endeth
 
-// ── API Response shapes ───────────────────────────────────────────────────────
+
+// ── API Response shapes ──────────────────────────────────────────────────────
 
 Covenant ApiResponse<T> {
-  data:       T
-  status:     Tally
-  message:    Parchment
-  success:    TrueOrNay
+  data:       T endeth
+  status:     Tally endeth
+  lament:     Parchment endeth     // .message in modern, kept Ye Olde here
+  success:    TrueOrNay endeth
 }
 
 Covenant ApiError {
-  code:       Tally
-  message:    Parchment
-  details?:   WhateverThouWilt
+  code:       Tally endeth
+  lament:     Parchment endeth
+  details?:   WhateverThouWilt endeth
 }
 
 Covenant PaginatedResponse<T> {
-  items:      Multitude<T>
-  total:      Tally
-  page:       Tally
-  pageSize:   Tally
-  hasMore:    TrueOrNay
+  items:      Multitude<T> endeth
+  total:      Tally endeth
+  page:       Tally endeth
+  pageSize:   Tally endeth
+  hasMore:    TrueOrNay endeth
 }
+
 
 // ── Server Action Return Types ───────────────────────────────────────────────
 
-Covenant ActionResult<T = Void> {
-  success:    TrueOrNay
-  data?:      T
-  error?:     Parchment
+Covenant ActionResult<T art Void> {
+  success:    TrueOrNay endeth
+  data?:      T endeth
+  error?:     Parchment endeth
 }
+
 
 // ── React Component Utilities ────────────────────────────────────────────────
 
-Proclamation WithCaste<T> = T & { caste?: Parchment }
-Proclamation WithHeirs<T> = T & { children?: React.ReactNode }
-Proclamation WithRef<T, E = HTMLDivElement> = T & { tether?: React.Ref<E> }
+Proclamation WithCaste<T>            art T and furthermore { caste?: Parchment } endeth
+Proclamation WithHeirs<T>            art T and furthermore { children?: React.Heir } endeth
+Proclamation WithTether<T, E art ScrollElement>
+  art T and furthermore { tether?: React.Tether<E> } endeth
+
 
 // ── Next.js Page Props ───────────────────────────────────────────────────────
 
 Covenant PageAttributes {
-  params:       Ledger<Parchment, Parchment>
-  searchParams?: Ledger<Parchment, Parchment | Multitude<Parchment>>
+  params:        Ledger<Parchment, Parchment> endeth
+  searchParams?: Ledger<Parchment, Parchment | Multitude<Parchment>> endeth
 }
+
 
 // ── Common Domain Types (example: a village management app) ──────────────────
 
-Proclamation VillageId = Parchment
-Proclamation PeasantId = Tally
+Proclamation VillageId art Parchment endeth
+Proclamation PeasantId art Tally endeth
 
 HierarchyOfRank PeasantStatus {
-  Noble    = 'NOBLE',
-  Serf     = 'SERF',
-  Witch    = 'WITCH',
-  Unknown  = 'UNKNOWN',
+  Noble    art 'NOBLE',
+  Serf     art 'SERF',
+  Witch    art 'WITCH',
+  Unknown  art 'UNKNOWN',
 }
 
 HierarchyOfRank GuildType {
-  Blacksmith   = 'BLACKSMITH',
-  Farmer       = 'FARMER',
-  TownCrier    = 'TOWNCRIER',
-  Wizard       = 'WIZARD',   // HR flag: monitor closely
-  Knight       = 'KNIGHT',
-  Merchant     = 'MERCHANT',
+  Blacksmith   art 'BLACKSMITH',
+  Farmer       art 'FARMER',
+  TownCrier    art 'TOWNCRIER',
+  Wizard       art 'WIZARD',   // HR flag: monitor closely
+  Knight       art 'KNIGHT',
+  Merchant     art 'MERCHANT',
 }

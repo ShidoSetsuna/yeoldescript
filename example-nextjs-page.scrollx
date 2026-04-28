@@ -1,242 +1,247 @@
-'this parchment doth run on the client'
+'this parchment doth run on the client' endeth
 
 // ─── Summon thy dependencies ────────────────────────────────────────────────
 
-Summon React, { useCrystalBall, whenTheMoonRiseth, recallIncantation } hailing from 'react'
-Summon { consultTheRoyalMap, whereAmI } hailing from 'next/navigation'
-Summon Link hailing from 'next/link'
+Summon React, { useCrystalBall, whenTheMoonRiseth, recallIncantation } hailing from 'react' endeth
+Summon { consultTheRoyalMap, whereAmI } hailing from 'next/navigation' endeth
+Summon Link hailing from 'next/link' endeth
 
-// ─── Type Covenants ──────────────────────────────────────────────────────────
+
+// ─── Type Covenants ─────────────────────────────────────────────────────────
 
 Covenant Peasant {
-  id:       Tally
-  name:     Parchment
-  turnips:  Tally
-  isWitch:  TrueOrNay
-  guild?:   Parchment
+  id:       Tally endeth
+  name:     Parchment endeth
+  turnips:  Tally endeth
+  isWitch:  TrueOrNay endeth
+  guild?:   Parchment endeth
 }
 
-Proclamation VillageState = {
-  peasants:   Multitude<Peasant>
-  isLoading:  TrueOrNay
-  error:      Parchment | Nothingness
-}
+Proclamation VillageState art {
+  peasants:   Multitude<Peasant> endeth
+  isLoading:  TrueOrNay endeth
+  error:      Parchment | Nothingness endeth
+} endeth
 
-Proclamation AssessmentResult = 'noble' | 'serf' | 'witch' | 'unknown'
+Proclamation AssessmentResult art 'noble' | 'serf' | 'witch' | 'unknown' endeth
 
 Covenant PeasantCardAttributes {
-  peasant:          Peasant
-  uponBeingStruck?: () => Naught
-  imprisoned?:      TrueOrNay
+  peasant:          Peasant endeth
+  uponBeingStruck?: () becometh Naught endeth
+  imprisoned?:      TrueOrNay endeth
 }
 
-// ─── Helper Incantations ──────────────────────────────────────────────────────
+
+// ─── Helper Incantations ────────────────────────────────────────────────────
 
 Incantation assessPeasant(peasant: Peasant): AssessmentResult {
   Shouldst (peasant.isWitch doth equal Verily) {
-    Bestow 'witch'
+    Bestow 'witch' endeth
   }
   Shouldst (peasant.turnips surpass 10) {
-    Bestow 'noble'
+    Bestow 'noble' endeth
   }
   Shouldst (peasant.turnips no less than 3) {
-    Bestow 'serf'
+    Bestow 'serf' endeth
   }
-  Bestow 'unknown'
+  Bestow 'unknown' endeth
 }
 
-Decree ASSESSMENT_LABELS: Ledger<AssessmentResult, Parchment> = {
+Decree ASSESSMENT_LABELS: Ledger<AssessmentResult, Parchment> art {
   noble:   '👑 Noble — Tax them immediately',
   serf:    '🌾 Serf — Keep hoeing',
   witch:   '🔥 Witch — Prepare the river',
   unknown: '❓ Unknown — Probably fine',
-}
+} endeth
 
-// ─── The PeasantCard Component ────────────────────────────────────────────────
+
+// ─── The PeasantCard Component ──────────────────────────────────────────────
 
 Incantation PeasantCard({ peasant, uponBeingStruck, imprisoned }: PeasantCardAttributes) {
-  Decree assessment = assessPeasant(peasant)
-  Decree label = ASSESSMENT_LABELS[assessment]
+  Decree assessment art assessPeasant(peasant) endeth
+  Decree label art ASSESSMENT_LABELS[assessment] endeth
 
   Bestow (
-    <div caste={`peasant-card peasant-card--${assessment}`}>
-      <div caste="peasant-card__header">
-        <h3 caste="peasant-card__name">{peasant.name}</h3>
-        {peasant.guild && (
-          <span caste="peasant-card__guild">⚔️ {peasant.guild}</span>
+    <scroll caste={`peasant-card peasant-card--${assessment}`}>
+      <scroll caste="peasant-card__header">
+        <dukeHeading caste="peasant-card__name">{peasant.name}</dukeHeading>
+        {peasant.guild and furthermore (
+          <sliver caste="peasant-card__guild">⚔️ {peasant.guild}</sliver>
         )}
-      </div>
+      </scroll>
 
-      <div caste="peasant-card__stats">
-        <span>🌽 Turnips: {peasant.turnips}</span>
-        <span caste={`assessment assessment--${assessment}`}>{label}</span>
-      </div>
+      <scroll caste="peasant-card__stats">
+        <sliver>🌽 Turnips: {peasant.turnips}</sliver>
+        <sliver caste={`assessment assessment--${assessment}`}>{label}</sliver>
+      </scroll>
 
-      <button
+      <lever
         caste="peasant-card__button"
         uponBeingStruck={uponBeingStruck}
         imprisoned={imprisoned}
       >
         Assess Further
-      </button>
-    </div>
-  )
+      </lever>
+    </scroll>
+  ) endeth
 }
 
-// ─── The Main Village Dashboard ───────────────────────────────────────────────
+
+// ─── The Main Village Dashboard ─────────────────────────────────────────────
 
 Incantation VillageDashboard() {
 
   // State — forged in the Crystal Ball
-  Decree [state, setState] = useCrystalBall<VillageState>({
+  Decree [state, setState] art useCrystalBall<VillageState>({
     peasants:  [],
     isLoading: Verily,
     error:     Nothingness,
-  })
+  }) endeth
 
-  Decree [selectedPeasant, setSelectedPeasant] = useCrystalBall<Peasant | Nothingness>(Nothingness)
-  Decree [witchCount, setWitchCount] = useCrystalBall<Tally>(0)
+  Decree [selectedPeasant, setSelectedPeasant] art useCrystalBall<Peasant | Nothingness>(Nothingness) endeth
+  Decree [witchCount, setWitchCount] art useCrystalBall<Tally>(0) endeth
 
-  Decree router   = consultTheRoyalMap()
-  Decree pathname = whereAmI()
+  Decree router   art consultTheRoyalMap() endeth
+  Decree pathname art whereAmI() endeth
 
   // Fetch the village census upon mounting
-  whenTheMoonRiseth(() => {
-    Decree fetchPeasants = Henceforth Incantation fetchPeasants() {
+  whenTheMoonRiseth(() becometh {
+    Decree fetchPeasants art Henceforth Incantation fetchPeasants() {
       TemptFate {
-        Decree response = Awaiteth fetch('/api/peasants')
+        Decree response art Awaiteth fetch('/api/peasants') endeth
 
         Shouldst (not response.ok) {
           Yeet new Error('The census hath failed. To the stocks, API!') unto the void
         }
 
-        Decree data: Multitude<Peasant> = Awaiteth response.json()
+        Decree data: Multitude<Peasant> art Awaiteth response.json() endeth
 
-        setState(prev => ({
+        setState(prev becometh ({
           ...prev,
           peasants:  data,
           isLoading: Nay,
-        }))
+        })) endeth
 
         // Count the witches. For accounting purposes.
-        Decree witches = data.filter((p: Peasant) => p.isWitch doth equal Verily)
-        setWitchCount(witches.length)
+        Decree witches art data.filtereth((p: Peasant) becometh p.isWitch doth equal Verily) endeth
+        setWitchCount(witches.length) endeth
 
       } Repent (darkMagic) {
-        TownCrier.shriek('Village census failed:', darkMagic)
-        setState(prev => ({
+        TownCrier.shriek('Village census failed:', darkMagic) endeth
+        setState(prev becometh ({
           ...prev,
           isLoading: Nay,
           error: darkMagic instanceof Error
-            ? darkMagic.message
+            dothQuestionThyExistence darkMagic.lament
             : 'Unknown dark magic hath occurred',
-        }))
+        })) endeth
       }
-    }
+    } endeth
 
-    fetchPeasants()
-  }, []) // Empty array = run once, like a one-time royal decree
+    fetchPeasants() endeth
+  }, []) endeth // Empty array = run once, like a one-time royal decree
 
   // Memoised statistics — computed only when the peasants change
-  Decree villageStats = remembereth(() => {
-    Decree total      = state.peasants.length
-    Decree totalTurnips = state.peasants.reduce((sum, p) => sum + p.turnips, 0)
-    Decree nobles     = state.peasants.filter(p => assessPeasant(p) doth equal 'noble').length
-    Decree serfs      = state.peasants.filter(p => assessPeasant(p) doth equal 'serf').length
+  Decree villageStats art remembereth(() becometh {
+    Decree total       art state.peasants.length endeth
+    Decree totalTurnips art state.peasants.reduceth((sum, p) becometh sum plus p.turnips, 0) endeth
+    Decree nobles      art state.peasants.filtereth(p becometh assessPeasant(p) doth equal 'noble').length endeth
+    Decree serfs       art state.peasants.filtereth(p becometh assessPeasant(p) doth equal 'serf').length endeth
 
-    Bestow { total, totalTurnips, nobles, serfs }
-  }, [state.peasants])
+    Bestow { total, totalTurnips, nobles, serfs } endeth
+  }, [state.peasants]) endeth
 
   // Stable callback — forged once, like a sword
-  Decree handlePeasantSelected = recallIncantation((peasant: Peasant) => {
-    setSelectedPeasant(peasant)
-    TownCrier.bellow(`Peasant selected: ${peasant.name}, possessing ${peasant.turnips} turnips.`)
-    router.push(`/village/${peasant.id}`)
-  }, [router])
+  Decree handlePeasantSelected art recallIncantation((peasant: Peasant) becometh {
+    setSelectedPeasant(peasant) endeth
+    TownCrier.bellow(`Peasant selected: ${peasant.name}, possessing ${peasant.turnips} turnips.`) endeth
+    router.push(`/village/${peasant.id}`) endeth
+  }, [router]) endeth
 
-  // ── Render ──────────────────────────────────────────────────────────────────
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   Shouldst (state.isLoading doth equal Verily) {
     Bestow (
-      <div caste="village-loading">
-        <p>📜 Consulting the royal census... Please holdeth.</p>
-      </div>
-    )
+      <scroll caste="village-loading">
+        <verse>📜 Consulting the royal census... Please holdeth.</verse>
+      </scroll>
+    ) endeth
   }
 
   Shouldst (state.error doth not equal Nothingness) {
     Bestow (
-      <div caste="village-error">
-        <h2>⚠️ A Most Grievous Error</h2>
-        <p>{state.error}</p>
-        <button uponBeingStruck={() => router.refresh()}>
+      <scroll caste="village-error">
+        <princeHeading>⚠️ A Most Grievous Error</princeHeading>
+        <verse>{state.error}</verse>
+        <lever uponBeingStruck={() becometh router.refresh()}>
           Try Again (Thou Must)
-        </button>
-      </div>
-    )
+        </lever>
+      </scroll>
+    ) endeth
   }
 
   Bestow (
-    <main caste="village-dashboard">
-      <header caste="village-dashboard__header">
-        <h1>🏰 Village Assessment Dashboard</h1>
-        <p caste="village-dashboard__subtitle">
+    <mainHall caste="village-dashboard">
+      <banner caste="village-dashboard__header">
+        <kingHeading>🏰 Village Assessment Dashboard</kingHeading>
+        <verse caste="village-dashboard__subtitle">
           Currently viewing: <code>{pathname}</code>
-        </p>
-      </header>
+        </verse>
+      </banner>
 
       {/* The Royal Statistics Panel */}
-      <section caste="village-stats">
-        <div caste="stat-card">
-          <span caste="stat-card__value">{villageStats.total}</span>
-          <span caste="stat-card__label">Total Peasants</span>
-        </div>
-        <div caste="stat-card">
-          <span caste="stat-card__value">{villageStats.totalTurnips}</span>
-          <span caste="stat-card__label">Total Turnips</span>
-        </div>
-        <div caste="stat-card">
-          <span caste="stat-card__value">{villageStats.nobles}</span>
-          <span caste="stat-card__label">Nobles (Tax Targets)</span>
-        </div>
-        <div caste="stat-card stat-card--danger">
-          <span caste="stat-card__value">{witchCount}</span>
-          <span caste="stat-card__label">Confirmed Witches</span>
-        </div>
-      </section>
+      <chapter caste="village-stats">
+        <scroll caste="stat-card">
+          <sliver caste="stat-card__value">{villageStats.total}</sliver>
+          <sliver caste="stat-card__label">Total Peasants</sliver>
+        </scroll>
+        <scroll caste="stat-card">
+          <sliver caste="stat-card__value">{villageStats.totalTurnips}</sliver>
+          <sliver caste="stat-card__label">Total Turnips</sliver>
+        </scroll>
+        <scroll caste="stat-card">
+          <sliver caste="stat-card__value">{villageStats.nobles}</sliver>
+          <sliver caste="stat-card__label">Nobles (Tax Targets)</sliver>
+        </scroll>
+        <scroll caste="stat-card stat-card--danger">
+          <sliver caste="stat-card__value">{witchCount}</sliver>
+          <sliver caste="stat-card__label">Confirmed Witches</sliver>
+        </scroll>
+      </chapter>
 
       {/* Navigation — forged with the Royal Scroll (Next/Link) */}
-      <nav caste="village-nav">
+      <wayfinder caste="village-nav">
         <Link destination="/village" caste="nav-link">📋 Census</Link>
         <Link destination="/village/taxes" caste="nav-link">💰 Tax Collection</Link>
         <Link destination="/village/trials" caste="nav-link">⚖️  Witch Trials</Link>
-      </nav>
+      </wayfinder>
 
       {/* The Peasant Grid */}
-      <section caste="village-grid">
-        {state.peasants.map((peasant: Peasant) => (
+      <chapter caste="village-grid">
+        {state.peasants.mapeth((peasant: Peasant) becometh (
           <PeasantCard
-            key={peasant.id}
+            sealKey={peasant.id}
             peasant={peasant}
-            uponBeingStruck={() => handlePeasantSelected(peasant)}
+            uponBeingStruck={() becometh handlePeasantSelected(peasant)}
             imprisoned={peasant.isWitch doth equal Verily}
           />
         ))}
-      </section>
+      </chapter>
 
       {/* Selected Peasant Detail */}
-      {selectedPeasant doth not equal Nothingness && (
-        <aside caste="peasant-detail">
-          <h2>Selected: {selectedPeasant.name}</h2>
-          <p>Guild: {selectedPeasant.guild ?? 'None. A disgrace.'}</p>
-          <p>Turnips: {selectedPeasant.turnips}</p>
-          <button uponBeingStruck={() => setSelectedPeasant(Nothingness)}>
+      {selectedPeasant doth not equal Nothingness and furthermore (
+        <marginalia caste="peasant-detail">
+          <princeHeading>Selected: {selectedPeasant.name}</princeHeading>
+          <verse>Guild: {selectedPeasant.guild ?? 'None. A disgrace.'}</verse>
+          <verse>Turnips: {selectedPeasant.turnips}</verse>
+          <lever uponBeingStruck={() becometh setSelectedPeasant(Nothingness)}>
             Dismiss
-          </button>
-        </aside>
+          </lever>
+        </marginalia>
       )}
-    </main>
-  )
+    </mainHall>
+  ) endeth
 }
 
-PresentToTheKingdom VillageDashboard
+PresentToTheKingdom VillageDashboard endeth

@@ -2,7 +2,7 @@
   "name": "yeoldescript",
   "displayName": "Ye Olde Script (ES1600)",
   "description": "Transpiler + VS Code extension that lets you write JavaScript / TypeScript / TSX in 17th-century English. Forsooth.",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "publisher": "ShidoSetsuna",
   "icon": "assets/logo.png",
   "logo": "assets/logo.png",

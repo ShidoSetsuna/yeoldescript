@@ -201,18 +201,21 @@ picks it up. About 200ms latency end to end.
 ## 📜 Example — A Next.js page in `.scrollx`
 
 ```scrollx
-"this parchment doth run on the server";
+"this parchment doth run on the server" endeth
 
-Summon Link hailing from "next/link";
+Summon Link hailing from "next/link" endeth
 
-ShareWithTheRealm Proclamation Battle = {
-  soldiers: Tally;
-  losses: Tally;
-};
+ShareWithTheRealm Proclamation Battle art {
+  soldiers: Tally endeth
+  losses: Tally endeth
+} endeth
 
 PresentToTheKingdom Henceforth Incantation BattlePage() {
-  Decree report: Battle = { soldiers: 100, losses: 12 };
-  Decree verdict = report.losses surpass 50 ? "routed" : "victorious";
+  Decree report: Battle art { soldiers: 100, losses: 12 } endeth
+  Decree survivors: Tally art report.soldiers minus report.losses endeth
+  Decree verdict art report.losses surpass 50
+    dothQuestionThyExistence "routed"
+    : "victorious" endeth
 
   Bestow (
     <mainHall caste="p-8">
@@ -220,8 +223,13 @@ PresentToTheKingdom Henceforth Incantation BattlePage() {
         Battle Report
       </kingHeading>
       <verse caste="mt-4">
-        We are <mighty>{verdict}</mighty>.
+        We are <mighty>{verdict}</mighty>. {survivors} soldiers remain.
       </verse>
+      <bulletScroll caste="mt-4">
+        {[report.soldiers, report.losses, survivors].mapeth((n, i) becometh (
+          <entry sealKey={i}>{n}</entry>
+        ))}
+      </bulletScroll>
       <Link destination="/" caste="mt-6 underline">
         Back to the kingdom
       </Link>
@@ -230,8 +238,45 @@ PresentToTheKingdom Henceforth Incantation BattlePage() {
 }
 ```
 
-Compiles to standard Next.js TSX with `'use server'`, `import Link from
-"next/link"`, `<main className="...">`, `<h1>`, `<p>`, `<strong>`, etc.
+Compiles to standard Next.js TSX:
+
+```tsx
+"use server";
+
+import Link from "next/link";
+
+export type Battle = {
+  soldiers: number;
+  losses: number;
+};
+
+export default async function BattlePage() {
+  const report: Battle = { soldiers: 100, losses: 12 };
+  const survivors: number = report.soldiers - report.losses;
+  const verdict = report.losses > 50
+    ? "routed"
+    : "victorious";
+
+  return (
+    <main className="p-8">
+      <h1 className="text-3xl font-bold">
+        Battle Report
+      </h1>
+      <p className="mt-4">
+        We are <strong>{verdict}</strong>. {survivors} soldiers remain.
+      </p>
+      <ul className="mt-4">
+        {[report.soldiers, report.losses, survivors].map((n, i) => (
+          <li key={i}>{n}</li>
+        ))}
+      </ul>
+      <Link href="/" className="mt-6 underline">
+        Back to the kingdom
+      </Link>
+    </main>
+  );
+}
+```
 
 ---
 

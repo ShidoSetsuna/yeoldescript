@@ -20,6 +20,8 @@
     { "include": "#keywords-error" },
     { "include": "#keywords-return" },
     { "include": "#keywords-operators" },
+    { "include": "#builtins" },
+    { "include": "#method-aliases" },
     { "include": "#town-crier" },
     { "include": "#numbers" }
   ],
@@ -106,12 +108,12 @@
         {
           "comment": "JSX props with values — medieval versions",
           "name": "entity.other.attribute-name.yeolde",
-          "match": "\\b(caste|uponBeingStruck|uponMutation|uponSubmission|uponKeystroke|uponKeyRelease|uponGazing|uponLookingAway|uponHovering|uponFleeing|uponLoading|uponScrolling|uponError|imprisoned|prophecy|destination|provenance|inscription|tether|genus|calling|sigil|sealKey|treasure|compulsory|station|placardFor|command|rite|tongue|tooltip|flourish|wherethrough|relation|speakAs|speakAsBy|invisibleToHerald|describedAsBy|currentlyAt|breadth|stature|spans|fillEntirely|urgent|inkFrame|inkFill|inkOutline|inkOutlineWidth|inkOutlineEnd|inkOutlineJoin|inkFillRule|inkClipRule|namespaceFrom|inkData)(?==)"
+          "match": "\\b(caste|uponBeingStruck|uponMutation|uponSubmission|uponKeystroke|uponKeyRelease|uponGazing|uponLookingAway|uponHovering|uponFleeing|uponLoading|uponScrolling|uponError|uponMousePressed|uponMouseReleased|uponMouseRoaming|uponConjuring|uponDoubleStruck|uponDragging|uponDropping|uponWheeling|uponCopying|uponCutting|uponPasting|uponPlaying|uponPausing|uponEnding|imprisoned|prophecy|destination|provenance|inscription|tether|genus|calling|sigil|sealKey|treasure|compulsory|station|placardFor|command|rite|tongue|tooltip|flourish|wherethrough|relation|speakAs|speakAsBy|invisibleToHerald|describedAsBy|currentlyAt|breadth|stature|spans|fillEntirely|urgent|inkFrame|inkFill|inkOutline|inkOutlineWidth|inkOutlineEnd|inkOutlineJoin|inkFillRule|inkClipRule|namespaceFrom|inkData|least|most|tick|leastLength|mostLength|originalTreasure|originalMark|marked|chosen|many)(?==)"
         },
         {
           "comment": "Boolean JSX props — same words, no value attached",
           "name": "entity.other.attribute-name.yeolde",
-          "match": "\\b(compulsory|urgent|fillEntirely|invisibleToHerald|imprisoned)(?=[\\s/>])"
+          "match": "\\b(compulsory|urgent|fillEntirely|invisibleToHerald|imprisoned|marked|chosen|many|originalMark)(?=[\\s/>])"
         }
       ]
     },
@@ -255,8 +257,63 @@
           "match": "\\b(and furthermore|or perchance)\\b"
         },
         {
+          "name": "keyword.operator.assignment.yeolde",
+          "match": "\\bart\\b"
+        },
+        {
+          "name": "keyword.operator.arithmetic.yeolde",
+          "match": "\\b(plus|minus|times|over|modulo)\\b"
+        },
+        {
+          "name": "keyword.operator.arrow.yeolde",
+          "match": "\\bbecometh\\b"
+        },
+        {
+          "name": "keyword.operator.ternary.yeolde",
+          "match": "\\bdothQuestionThyExistence\\b"
+        },
+        {
+          "name": "punctuation.terminator.statement.yeolde",
+          "match": "\\bendeth\\b"
+        },
+        {
           "name": "keyword.operator.delete.yeolde",
           "match": "\\bDeleteFromExistence\\b"
+        }
+      ]
+    },
+
+    "builtins": {
+      "patterns": [
+        {
+          "comment": "Built-in constructors and globals (medieval aliases).",
+          "name": "support.class.builtin.yeolde",
+          "match": "\\b(Gathering|WeakGathering|Codex|WeakCodex|Era|Glyph|Arithmetic|tallyOf|truthOf|wordOf)\\b"
+        },
+        {
+          "comment": "HTML/SVG element types (medieval aliases for HTMLDivElement etc.).",
+          "name": "support.type.dom.yeolde",
+          "match": "\\b(BaseElement|ScrollElement|SliverElement|VerseElement|PilgrimageElement|LeverElement|QuillElement|WideQuillElement|MenuOfChoicesElement|PetitionElement|PaintingElement|HeadingElement|InkElement|InkCanvasElement|InkStrokeElement)\\b"
+        },
+        {
+          "comment": "React utility types under the React namespace.",
+          "name": "support.type.react.yeolde",
+          "match": "\\bReact\\.(Heir|Manuscript|Tether|TetherObject|MutableTether|UponBeingStruckEvent|UponMutationEvent|UponSubmissionEvent|UponKeystrokeEvent)\\b"
+        }
+      ]
+    },
+
+    "method-aliases": {
+      "patterns": [
+        {
+          "comment": "Specific named method aliases for built-ins (Math, Error, Date, Array.from, DOM events).",
+          "name": "support.function.method.yeolde",
+          "match": "\\.(descendeth|ascendeth|roundeth|abseth|greatest|lowest|fortune|poweth|sqrteth|signOf|truncate|gather|thwart|silence|silenceForever|lament|toStringeth|toScroll)\\b"
+        },
+        {
+          "comment": "Catch-all for the -eth suffix pattern that covers most array/string/promise method aliases (.mapeth, .filtereth, .lowereth, .theneth, etc.). Tightly bounded so it doesn't catch English words ending in eth in comments.",
+          "name": "support.function.method.yeolde",
+          "match": "\\.[a-zA-Z]+eth\\b"
         }
       ]
     },

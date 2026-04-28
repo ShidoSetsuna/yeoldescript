@@ -405,6 +405,256 @@ const ROYAL_DECREES = [
   [/\bnamespaceFrom=/g,           'xmlns='],
   [/\binkData=/g,                 'd='],
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // XIX. ARROW FUNCTIONS
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\s+becometh\s+/g,             ' => '],
+
+  // Question mark — covers ternary, optional chaining, and TS optional.
+  //
+  //   1. Optional chaining (`obj?.prop`, `fn?.()`, `arr?.[0]`)
+  //      Source must wrap the word in dots:
+  //        `obj.dothQuestionThyExistence.prop`        → `obj?.prop`
+  //        `fn.dothQuestionThyExistence.()`           → `fn?.()`
+  //        `arr.dothQuestionThyExistence.[0]`         → `arr?.[0]`
+  //   2. Bare `?` (ternary `a ? b : c`, TS optional `x?: T`)
+  //      The leading whitespace is consumed so TS optional reads tight.
+  //
+  // Order matters: optional chaining runs first to avoid the bare-? rule
+  // chewing into one of its dots.
+  [/\.dothQuestionThyExistence\./g,    '?.'],
+  [/\bdothQuestionThyExistence\b/g,    '?'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XX. ARRAY METHODS
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.mapeth\b/g,                 '.map'],
+  [/\.filtereth\b/g,              '.filter'],
+  [/\.findeth\b/g,                '.find'],
+  [/\.findIndexeth\b/g,           '.findIndex'],
+  [/\.findLasteth\b/g,            '.findLast'],
+  [/\.findLastIndexeth\b/g,       '.findLastIndex'],
+  [/\.sorteth\b/g,                '.sort'],
+  [/\.includeth\b/g,              '.includes'],
+  [/\.indexOfeth\b/g,             '.indexOf'],
+  [/\.lastIndexOfeth\b/g,         '.lastIndexOf'],
+  [/\.reduceth\b/g,               '.reduce'],
+  [/\.reduceRighteth\b/g,         '.reduceRight'],
+  [/\.forEacheth\b/g,             '.forEach'],
+  [/\.someth\b/g,                 '.some'],
+  [/\.everyeth\b/g,               '.every'],
+  [/\.sliceth\b/g,                '.slice'],
+  [/\.spliceth\b/g,                '.splice'],
+  [/\.concateth\b/g,              '.concat'],
+  [/\.joineth\b/g,                '.join'],
+  [/\.reverseth\b/g,              '.reverse'],
+  [/\.flatteneth\b/g,             '.flat'],
+  [/\.flatMapeth\b/g,             '.flatMap'],
+  [/\.pusheth\b/g,                '.push'],
+  [/\.poppeth\b/g,                '.pop'],
+  [/\.shifteth\b/g,               '.shift'],
+  [/\.unshifteth\b/g,             '.unshift'],
+  [/\.filleth\b/g,                '.fill'],
+  [/\.ateth\b/g,                  '.at'],
+  [/\.gather\b/g,                 '.from'],          // Multitude.gather → Array.from
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXI. STRING METHODS
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.lowereth\b/g,               '.toLowerCase'],
+  [/\.uppereth\b/g,               '.toUpperCase'],
+  [/\.trimeth\b/g,                '.trim'],
+  [/\.trimStarteth\b/g,           '.trimStart'],
+  [/\.trimEndeth\b/g,             '.trimEnd'],
+  [/\.spliteth\b/g,               '.split'],
+  [/\.replaceth\b/g,              '.replace'],
+  [/\.replaceAlleth\b/g,          '.replaceAll'],
+  [/\.beginneth\b/g,              '.startsWith'],
+  [/\.endeth\b/g,                 '.endsWith'],
+  [/\.substringeth\b/g,           '.substring'],
+  [/\.charAteth\b/g,              '.charAt'],
+  [/\.charCodeAteth\b/g,          '.charCodeAt'],
+  [/\.repeateth\b/g,              '.repeat'],
+  [/\.padStarteth\b/g,            '.padStart'],
+  [/\.padEndeth\b/g,              '.padEnd'],
+  [/\.matcheth\b/g,               '.match'],
+  [/\.matchAlleth\b/g,            '.matchAll'],
+  [/\.searcheth\b/g,              '.search'],
+  [/\.normalizeth\b/g,            '.normalize'],
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // Semicolon — statement terminator. Must come AFTER the string method
+  // `.endeth` → `.endsWith` rule above, otherwise the bare-word match
+  // would eat the `endeth` portion of a `.endeth` call.
+  //
+  // Eats any leading whitespace so `Decree x = 5 endeth` collapses tight
+  // to `const x = 5;`.
+  // ──────────────────────────────────────────────────────────────────────────
+
+  [/\s*\bendeth\b/g,              ';'],
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // Binary operators. Each rule requires whitespace on BOTH sides of the
+  // word so that JSX attributes (`caste="..."` — no space around `=`),
+  // regex character classes (`/[a-z]/` — no space around `-`), and string
+  // concatenation in templates (no `plus` literal in code) all pass
+  // through untouched.
+  //
+  // Trade-off: any of these words appearing in comments or string
+  // literals will be replaced. Don't name variables `art`/`plus`/`minus`
+  // and avoid those words in nearby comments.
+  // ──────────────────────────────────────────────────────────────────────────
+
+  [/\s+art\s+/g,                  ' = '],
+  [/\s+plus\s+/g,                 ' + '],
+  [/\s+minus\s+/g,                ' - '],
+  [/\s+times\s+/g,                ' * '],
+  [/\s+over\s+/g,                 ' / '],
+  [/\s+modulo\s+/g,               ' % '],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXII. SHARED ITERATORS (Array + String + Map + Set)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.keyseth\b/g,                '.keys'],
+  [/\.valueseth\b/g,              '.values'],
+  [/\.entrieseth\b/g,             '.entries'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXIII. PROMISE METHODS
+  //   .catch already works via Repent → catch (matches anywhere); these
+  //   provide method-style aliases for chained calls so `oath.theneth(...)`
+  //   reads consistently next to `oath.catcheth(...)`.
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.theneth\b/g,                '.then'],
+  [/\.catcheth\b/g,               '.catch'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXIV. DOM EVENT METHODS
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.thwart\b/g,                 '.preventDefault'],
+  [/\.silence\b/g,                '.stopPropagation'],
+  [/\.silenceForever\b/g,         '.stopImmediatePropagation'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXIVa. MATH METHODS (used as Arithmetic.*)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.descendeth\b/g,             '.floor'],
+  [/\.ascendeth\b/g,              '.ceil'],
+  [/\.roundeth\b/g,               '.round'],
+  [/\.abseth\b/g,                 '.abs'],
+  [/\.greatest\b/g,               '.max'],
+  [/\.lowest\b/g,                 '.min'],
+  [/\.fortune\b/g,                '.random'],
+  [/\.poweth\b/g,                 '.pow'],
+  [/\.sqrteth\b/g,                '.sqrt'],
+  [/\.signOf\b/g,                 '.sign'],
+  [/\.truncate\b/g,               '.trunc'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXIVb. COMMON PROPERTY ALIASES
+  //   Properties that show up across Error objects, function metadata, etc.
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\.lament\b/g,                 '.message'],
+  [/\.toStringeth\b/g,            '.toString'],
+  [/\.toScroll\b/g,               '.toISOString'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXIVc. HTML & SVG ELEMENT TYPES (TypeScript DOM library)
+  //   These mirror the tag aliases in section XVII so refs and event
+  //   handlers can be typed consistently with the JSX tags.
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\bBaseElement\b/g,            'HTMLElement'],
+  [/\bScrollElement\b/g,          'HTMLDivElement'],
+  [/\bSliverElement\b/g,          'HTMLSpanElement'],
+  [/\bVerseElement\b/g,           'HTMLParagraphElement'],
+  [/\bPilgrimageElement\b/g,      'HTMLAnchorElement'],
+  [/\bLeverElement\b/g,           'HTMLButtonElement'],
+  [/\bQuillElement\b/g,           'HTMLInputElement'],
+  [/\bWideQuillElement\b/g,       'HTMLTextAreaElement'],
+  [/\bMenuOfChoicesElement\b/g,   'HTMLSelectElement'],
+  [/\bPetitionElement\b/g,        'HTMLFormElement'],
+  [/\bPaintingElement\b/g,        'HTMLImageElement'],
+  [/\bHeadingElement\b/g,         'HTMLHeadingElement'],
+  [/\bInkElement\b/g,             'SVGElement'],
+  [/\bInkCanvasElement\b/g,       'SVGSVGElement'],
+  [/\bInkStrokeElement\b/g,       'SVGPathElement'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXIVd. REACT UTILITY TYPES
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\bReact\.Heir\b/g,                  'React.ReactNode'],
+  [/\bReact\.Manuscript\b/g,            'React.ReactElement'],
+  [/\bReact\.Tether\b/g,                'React.Ref'],
+  [/\bReact\.TetherObject\b/g,          'React.RefObject'],
+  [/\bReact\.MutableTether\b/g,         'React.MutableRefObject'],
+  [/\bReact\.UponBeingStruckEvent\b/g,  'React.MouseEvent'],
+  [/\bReact\.UponMutationEvent\b/g,     'React.ChangeEvent'],
+  [/\bReact\.UponSubmissionEvent\b/g,   'React.FormEvent'],
+  [/\bReact\.UponKeystrokeEvent\b/g,    'React.KeyboardEvent'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXV. CONSTRUCTORS / GLOBAL OBJECTS
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\bGathering\b/g,              'Set'],
+  [/\bWeakGathering\b/g,          'WeakSet'],
+  [/\bCodex\b/g,                  'Map'],
+  [/\bWeakCodex\b/g,              'WeakMap'],
+  [/\bEra\b/g,                    'Date'],
+  [/\bGlyph\b/g,                  'RegExp'],
+  [/\bArithmetic\b/g,             'Math'],
+  [/\btallyOf\b/g,                'Number'],
+  [/\btruthOf\b/g,                'Boolean'],
+  [/\bwordOf\b/g,                 'String'],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXVI. ADDITIONAL FORM ATTRIBUTES
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\bleast=/g,                   'min='],
+  [/\bmost=/g,                    'max='],
+  [/\btick=/g,                    'step='],
+  [/\bleastLength=/g,             'minLength='],
+  [/\bmostLength=/g,              'maxLength='],
+  [/\boriginalTreasure=/g,        'defaultValue='],
+  [/\boriginalMark(?=[\s/>])/g,   'defaultChecked'],
+  [/\boriginalMark=/g,            'defaultChecked='],
+  [/\bmarked(?=[\s/>])/g,         'checked'],
+  [/\bmarked=/g,                  'checked='],
+  [/\bchosen(?=[\s/>])/g,         'selected'],
+  [/\bchosen=/g,                  'selected='],
+  [/\bmany(?=[\s/>])/g,           'multiple'],
+  [/\bmany=/g,                    'multiple='],
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // XXVII. ADDITIONAL EVENT HANDLERS
+  // ══════════════════════════════════════════════════════════════════════════
+
+  [/\buponMousePressed=/g,        'onMouseDown='],
+  [/\buponMouseReleased=/g,       'onMouseUp='],
+  [/\buponMouseRoaming=/g,        'onMouseMove='],
+  [/\buponConjuring=/g,           'onContextMenu='],
+  [/\buponDoubleStruck=/g,        'onDoubleClick='],
+  [/\buponDragging=/g,            'onDrag='],
+  [/\buponDropping=/g,            'onDrop='],
+  [/\buponWheeling=/g,            'onWheel='],
+  [/\buponCopying=/g,             'onCopy='],
+  [/\buponCutting=/g,             'onCut='],
+  [/\buponPasting=/g,             'onPaste='],
+  [/\buponPlaying=/g,             'onPlay='],
+  [/\buponPausing=/g,             'onPause='],
+  [/\buponEnding=/g,              'onEnded='],
+
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -428,14 +678,21 @@ function transpile(src, verbose = false) {
 
 function stampParchment(code, inputFile, outputExt) {
   const label = { '.js': 'JS', '.ts': 'TypeScript', '.jsx': 'JSX', '.tsx': 'React TSX' }[outputExt] ?? 'JS';
-  return [
-    `// ══════════════════════════════════════════════════════════════════`,
-    `//  AUTO-GENERATED — YE OLDE SCRIPT TRANSPILER v2.0.0`,
-    `//  Source: ${inputFile}  →  ${label}`,
-    `//  "Thou art reading machine-translated medieval ${label}."`,
-    `// ══════════════════════════════════════════════════════════════════`,
-    ``, code,
+  // Footer, not header — this preserves 1:1 line numbers between the
+  // Ye Olde source and the compiled output, so a tsc/Next error at
+  // "file.ts:42" lands on the same code position in "file.parchment:42".
+  // Wrapped in a single block comment so it doesn't break source-map
+  // tools that scan trailing lines.
+  const trailer = [
+    ``,
+    `/* ════════════════════════════════════════════════════════════════`,
+    `   AUTO-GENERATED — YE OLDE SCRIPT TRANSPILER`,
+    `   Source: ${inputFile}  →  ${label}`,
+    `   Edit the source file, not this one.`,
+    `   ════════════════════════════════════════════════════════════════ */`,
+    ``,
   ].join('\n');
+  return code.replace(/\n+$/, '') + trailer;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

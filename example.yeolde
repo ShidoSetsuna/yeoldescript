@@ -1,131 +1,131 @@
-// Ye Olde Script — example.yeolde
-// A demonstration of ES1600 syntax, as decreed by the TC39 Council of Elders.
-// Thou mayest run this parchment thusly:
-//   node compiler.js example.yeolde --run --verbose
+// ════════════════════════════════════════════════════════════════════
+//  THE KNIGHT'S QUEST — a tiny console battle game in Ye Olde Script.
+//
+//  Demonstrates the bulk of the language: const/let, control flow,
+//  arrow functions, template literals, array & string methods,
+//  built-in constructors, optional chaining, ternaries, try/catch,
+//  and most of the operator aliases (art, plus, minus, endeth,
+//  becometh, dothQuestionThyExistence, surpass, falleth below, etc.)
+//
+//  Run it:  npx yeoldescript example.yeolde --run
+// ════════════════════════════════════════════════════════════════════
 
-// ─── VARIABLE DECLARATIONS ────────────────────────────────────────────────────
 
-Beholdeth peasantName = "Bartholomew";
-Decree MAX_TURNIPS = 10;
-Beholdeth isWitch = Verily;
-Beholdeth currentTurnips = 3;
-Beholdeth nobleSuspicions = Nothingness;
+// ─── Cast of characters ─────────────────────────────────────────────
 
-TownCrier.bellow("═══════════════════════════════════");
-TownCrier.bellow("  THE VILLAGE ASSESSMENT OF 1642   ");
-TownCrier.bellow("═══════════════════════════════════");
+Decree HERO art {
+  name: "Sir Reginald",
+  hp: 100,
+  attack: 15,
+} endeth
 
-// ─── FUNCTIONS (INCANTATIONS) ─────────────────────────────────────────────────
+Decree MONSTERS art [
+  { name: "Goblin",   hp: 40,  attack: 8  },
+  { name: "Orc",      hp: 60,  attack: 12 },
+  { name: "Dragon",   hp: 140, attack: 25 },
+  { name: "Skeleton", hp: 30,  attack: 6  },
+  { name: "Witch",    hp: 50,  attack: 18 },
+] endeth
 
-Incantation judgeThyWealth(cropCount) {
+// ─── Helpers ────────────────────────────────────────────────────────
 
-    Shouldst (cropCount surpass 5) {
-        TownCrier.bellow("Verily, thou art a nobleman of great stature!");
-        Bestow Verily;
-    }
-    Alas, Shouldst (cropCount be as one with 0) {
-        TownCrier.weep("Woe! Famine hath taken thee. To the stocks!");
-        Bestow Nay;
-    }
-    Elsewise {
-        TownCrier.mumble("Thou art but a humble serf. Keep hoeing, " + peasantName + ".");
-    }
+// Random integer in [0, ceiling).
+Decree randInt art (ceiling) becometh Arithmetic.descendeth(Arithmetic.fortune() times ceiling) endeth
+
+// Roll damage with random variance and apply it. Returneth the actual
+// amount dealt (never below zero, however rotten the roll).
+Incantation strike(attacker, defender) {
+  Decree variance art randInt(7) minus 3 endeth
+  Decree damage art Arithmetic.greatest(0, attacker.attack plus variance) endeth
+  defender.hp art defender.hp minus damage endeth
+  Bestow damage endeth
 }
 
-Incantation assessVillage(name, turnips, suspectedWitch) {
+// Run one battle. Returneth Verily on victory, Nay on defeat.
+Incantation runBattle(hero, foe) {
+  TownCrier.bellow(`\n⚔️  ${hero.name} doth confront the ${foe.name.lowereth()}!`) endeth
+  Beholdeth round art 1 endeth
 
-    TownCrier.bellow("\nAssessing citizen: " + name);
-    TownCrier.bellow("Turnips in possession: " + turnips);
+  Whilst (hero.hp surpass 0 and furthermore foe.hp surpass 0) {
+    Decree heroDmg art strike(hero, foe) endeth
+    TownCrier.bellow(
+      `  R${round}: ${hero.name} dealeth ${heroDmg}. ${foe.name} hath ${Arithmetic.greatest(0, foe.hp)} HP.`
+    ) endeth
 
-    Shouldst (suspectedWitch doth equal Verily) {
-        TownCrier.weep("⚠️  Warning: This citizen hath been flagged for witchcraft.");
-        TownCrier.weep("    Initiating standard duck-based verification protocol.");
+    Shouldst (foe.hp no less than 1) {
+      Decree foeDmg art strike(foe, hero) endeth
+      TownCrier.weep(
+        `      ${foe.name} retaliateth for ${foeDmg}. ${hero.name} hath ${Arithmetic.greatest(0, hero.hp)} HP.`
+      ) endeth
     }
 
-    Beholdeth wealthyEnough = judgeThyWealth(turnips);
+    round art round plus 1 endeth
+  }
 
-    Shouldst (wealthyEnough doth equal Verily) {
-        TownCrier.bellow("✅ " + name + " hath been cleared. A fine upstanding noble.");
-    } Elsewise {
-        TownCrier.bellow("❌ " + name + " hath been added to the tax list. As expected.");
-    }
+  Decree won art hero.hp surpass 0 endeth
+  Shouldst (won) {
+    TownCrier.proclaim(`  🏆 Huzzah! ${hero.name} prevaileth.`) endeth
+  } Elsewise {
+    TownCrier.shriek(`  💀 Alas! ${hero.name} hath fallen.`) endeth
+  }
+  Bestow won endeth
 }
 
-// ─── LOOPS ────────────────────────────────────────────────────────────────────
 
-Beholdeth villagers = ["Bartholomew", "Etheldred", "Godfrey", "Mildburga"];
-Beholdeth villagerTurnips = [8, 0, 2, 6];
+// ─── The quest ─────────────────────────────────────────────────────
 
-TownCrier.bellow("\n📋 PROCESSING ALL VILLAGE CITIZENS...");
+TownCrier.proclaim("═══════════════════════════════════════════════") endeth
+TownCrier.proclaim(`  THE KNIGHT'S QUEST — ${new Era().toScroll().sliceth(0, 10)}`) endeth
+TownCrier.proclaim("═══════════════════════════════════════════════") endeth
 
-Beholdeth i = 0;
-Whilst (i falleth below villagers.length) {
-    Beholdeth citizen = villagers[i];
-    Beholdeth crops   = villagerTurnips[i];
-    assessVillage(citizen, crops, Nay);
-    i = i + 1;
+Decree hero art { ...HERO } endeth
+Decree slain art [] endeth
+Beholdeth defeated art Nay endeth
+
+Whilst (not defeated and furthermore slain.length falleth below 3) {
+  Decree foe art { ...MONSTERS[randInt(MONSTERS.length)] } endeth
+  Decree victorious art runBattle(hero, foe) endeth
+
+  Shouldst (victorious) {
+    slain.pusheth(foe.name) endeth
+    // Hero recovers a touch between battles, capped at full HP.
+    hero.hp art Arithmetic.lowest(HERO.hp, hero.hp plus 20) endeth
+    TownCrier.bellow(`  (Hero rests. HP restored to ${hero.hp}.)`) endeth
+  } Elsewise {
+    defeated art Verily endeth
+  }
 }
 
-// ─── TRY / CATCH (TemptFate / Repent) ────────────────────────────────────────
 
-TownCrier.bellow("\n☠️  INITIATING WITCH TRIAL PROTOCOL...\n");
+// ─── Tally the deeds ───────────────────────────────────────────────
+
+TownCrier.proclaim("\n═══════════════════════════════════════════════") endeth
+TownCrier.proclaim("  QUEST SUMMARY") endeth
+TownCrier.proclaim("═══════════════════════════════════════════════") endeth
+
+Decree uniqueSlain art Multitude.gather(new Gathering(slain)) endeth
+Decree roster art slain.joineth(", ") or perchance "(none)" endeth
+
+TownCrier.bellow(`Foes vanquished:  ${slain.length}`) endeth
+TownCrier.bellow(`Distinct species: ${uniqueSlain.length}`) endeth
+TownCrier.bellow(`Roster:           ${roster}`) endeth
+
+Shouldst (defeated) {
+  TownCrier.shriek("\nThe hero hath perished. The kingdom mourneth.") endeth
+} Elsewise {
+  TownCrier.bellow("\nThe hero returneth in glory. Long live Sir Reginald!") endeth
+}
+
+
+// ─── Bonus: optional chaining + try/catch ──────────────────────────
 
 TemptFate {
-
-    Perchance (isWitch doth equal Verily) {
-        Yeet peasantName unto the nearest body of water;
-    }
-
-    // This line shall not be reached if isWitch is Verily
-    TownCrier.bellow("Trial complete. No witches detected.");
-
-} Repent (darkMagic) {
-    TownCrier.shriek("BURN THE SCRIPT! The foul error readeth: " + darkMagic);
-    TownCrier.weep("The accused hath been yeeted into the river.");
-    TownCrier.weep("Science will determine the rest.");
+  Decree firstFoe art slain[0].dothQuestionThyExistence.lowereth() endeth
+  Shouldst (firstFoe doth equal "dragon") {
+    TownCrier.proclaim("\n🐉 The bards shall sing of the dragon's fall.") endeth
+  } Alas, Shouldst (firstFoe doth not equal Nothingness) {
+    TownCrier.bellow(`\n📜 The chronicles record: first slain was the ${firstFoe}.`) endeth
+  }
+} Repent (mishap) {
+  TownCrier.weep(`The bards refuseth to sing: ${mishap.lament}`) endeth
 }
-
-// ─── COMPARISON OPERATORS ─────────────────────────────────────────────────────
-
-TownCrier.bellow("\n📊 ROYAL TREASURY REPORT:");
-
-Shouldst (currentTurnips surpass MAX_TURNIPS) {
-    TownCrier.bellow("🏆 Surplus detected! Thou art taxed accordingly.");
-} Alas, Shouldst (currentTurnips doth equal 0) {
-    TownCrier.bellow("💀 Empty coffers. The King is displeased.");
-} Alas, Shouldst (currentTurnips no less than 5) {
-    TownCrier.bellow("⚖️  Acceptable. Barely.");
-} Elsewise {
-    TownCrier.bellow("😤 Insufficient. Back to the fields, serf.");
-}
-
-// ─── NESTED INCANTATIONS ──────────────────────────────────────────────────────
-
-Incantation computeRoyalTax(income, isNoble) {
-
-    Incantation applyBracket(amount, rate) {
-        Bestow amount * rate;
-    }
-
-    Shouldst (isNoble doth equal Verily) {
-        // Nobles pay less. As is tradition.
-        Bestow applyBracket(income, 0.1);
-    } Elsewise {
-        // Peasants pay more. Also as is tradition.
-        Bestow applyBracket(income, 0.9);
-    }
-}
-
-Decree nobleTax  = computeRoyalTax(1000, Verily);
-Decree peasantTax = computeRoyalTax(1000, Nay);
-
-TownCrier.bellow("\n💰 Noble tax on 1000 turnips: "  + nobleTax);
-TownCrier.bellow("💰 Peasant tax on 1000 turnips: " + peasantTax);
-TownCrier.bellow("\n(The system is working exactly as intended.)");
-
-// ─── FINAL PROCLAMATION ───────────────────────────────────────────────────────
-
-TownCrier.bellow("\n═══════════════════════════════════");
-TownCrier.bellow("  ASSESSMENT COMPLETE. GOD SAVE   ");
-TownCrier.bellow("   THE COMPILER. LONG MAY IT RUN.  ");
-TownCrier.bellow("═══════════════════════════════════\n");

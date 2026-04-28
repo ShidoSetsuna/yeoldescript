@@ -53,6 +53,21 @@ For an introduction and the most common terms, see the
 | `and furthermore`      | `&&`                |
 | `or perchance`         | `\|\|`              |
 | `not X`                | `!X` (where X starts with a letter or `(`) |
+| `becometh`             | `=>` (arrow function) |
+| `dothQuestionThyExistence` | `?` (ternary, TS optional) |
+| `.dothQuestionThyExistence.` | `?.` (optional chaining) |
+| `endeth`               | `;` (statement terminator) |
+| `art`                  | `=` (assignment, default param, type alias) |
+| `plus`                 | `+` (addition, concatenation) |
+| `minus`                | `-` (subtraction) |
+| `times`                | `*` (multiplication) |
+| `over`                 | `/` (division) |
+| `modulo`               | `%` (remainder) |
+
+**Caveat for `art` / `plus` / `minus`:** these are real English words. Don't
+name variables `art` / `plus` / `minus` (they'll be replaced wherever they
+appear with whitespace on both sides). Also avoid them in nearby comments
+— the regex doesn't know what's code vs prose.
 
 ## Modules
 
@@ -62,6 +77,138 @@ For an introduction and the most common terms, see the
 | `hailing from`         | `from`              |
 | `ShareWithTheRealm`    | `export`            |
 | `PresentToTheKingdom`  | `export default`    |
+
+## Built-in constructors & globals
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `Gathering`            | `Set`               |
+| `WeakGathering`        | `WeakSet`           |
+| `Codex`                | `Map`               |
+| `WeakCodex`            | `WeakMap`           |
+| `Era`                  | `Date`              |
+| `Glyph`                | `RegExp`            |
+| `Arithmetic`           | `Math`              |
+| `tallyOf(x)`           | `Number(x)`         |
+| `truthOf(x)`           | `Boolean(x)`        |
+| `wordOf(x)`            | `String(x)`         |
+
+`Multitude` (Array) and `Oath` (Promise) carry over from the TypeScript
+section — they're aliased everywhere those words appear, so
+`Multitude.gather(...)` and `Oath.resolve(...)` work too.
+
+---
+
+## Array methods
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.mapeth`              | `.map`              |
+| `.filtereth`           | `.filter`           |
+| `.findeth`             | `.find`             |
+| `.findIndexeth`        | `.findIndex`        |
+| `.findLasteth`         | `.findLast`         |
+| `.findLastIndexeth`    | `.findLastIndex`    |
+| `.sorteth`             | `.sort`             |
+| `.includeth`           | `.includes`         |
+| `.indexOfeth`          | `.indexOf`          |
+| `.lastIndexOfeth`      | `.lastIndexOf`      |
+| `.reduceth`            | `.reduce`           |
+| `.reduceRighteth`      | `.reduceRight`      |
+| `.forEacheth`          | `.forEach`          |
+| `.someth`              | `.some`             |
+| `.everyeth`            | `.every`            |
+| `.sliceth`             | `.slice`            |
+| `.spliceth`            | `.splice`           |
+| `.concateth`           | `.concat`           |
+| `.joineth`             | `.join`             |
+| `.reverseth`           | `.reverse`          |
+| `.flatteneth`          | `.flat`             |
+| `.flatMapeth`          | `.flatMap`          |
+| `.pusheth`             | `.push`             |
+| `.poppeth`             | `.pop`              |
+| `.shifteth`            | `.shift`            |
+| `.unshifteth`          | `.unshift`          |
+| `.filleth`             | `.fill`             |
+| `.ateth`               | `.at`               |
+| `.gather`              | `.from` (works for `Multitude.gather` → `Array.from`) |
+
+## String methods
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.lowereth`            | `.toLowerCase`      |
+| `.uppereth`            | `.toUpperCase`      |
+| `.trimeth`             | `.trim`             |
+| `.trimStarteth`        | `.trimStart`        |
+| `.trimEndeth`          | `.trimEnd`          |
+| `.spliteth`            | `.split`            |
+| `.replaceth`           | `.replace`          |
+| `.replaceAlleth`       | `.replaceAll`       |
+| `.beginneth`           | `.startsWith`       |
+| `.endeth`              | `.endsWith`         |
+| `.substringeth`        | `.substring`        |
+| `.charAteth`           | `.charAt`           |
+| `.charCodeAteth`       | `.charCodeAt`       |
+| `.repeateth`           | `.repeat`           |
+| `.padStarteth`         | `.padStart`         |
+| `.padEndeth`           | `.padEnd`           |
+| `.matcheth`            | `.match`            |
+| `.matchAlleth`         | `.matchAll`         |
+| `.searcheth`           | `.search`           |
+| `.normalizeth`         | `.normalize`        |
+
+## Shared iterator methods (Array / String / Map / Set)
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.keyseth`             | `.keys`             |
+| `.valueseth`           | `.values`           |
+| `.entrieseth`          | `.entries`          |
+
+## Promise methods
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.theneth`             | `.then`             |
+| `.catcheth`            | `.catch`            |
+
+`.finally` works via `Finalleth` (the keyword alias also matches in method
+position), so `oath.Finalleth(handler)` compiles to `oath.finally(handler)`.
+
+## DOM event methods
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.thwart`              | `.preventDefault`   |
+| `.silence`             | `.stopPropagation`  |
+| `.silenceForever`      | `.stopImmediatePropagation` |
+
+## Math methods (used as `Arithmetic.*`)
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.descendeth`          | `.floor`            |
+| `.ascendeth`           | `.ceil`             |
+| `.roundeth`            | `.round`            |
+| `.abseth`              | `.abs`              |
+| `.greatest`            | `.max`              |
+| `.lowest`              | `.min`              |
+| `.fortune`             | `.random`           |
+| `.poweth`              | `.pow`              |
+| `.sqrteth`             | `.sqrt`             |
+| `.signOf`              | `.sign`             |
+| `.truncate`            | `.trunc`            |
+
+## Common property aliases
+
+| Ye Olde Script         | Modern              |
+|------------------------|---------------------|
+| `.lament`              | `.message` (Error) |
+| `.toStringeth`         | `.toString`         |
+| `.toScroll`            | `.toISOString` (Date) |
+
+---
 
 ## Console (TownCrier)
 
@@ -283,6 +430,21 @@ For an introduction and the most common terms, see the
 | `invisibleToHerald`    | `aria-hidden`       |
 | `urgent`               | `priority` (Next/Image) |
 | `fillEntirely`         | `fill` (Next/Image) |
+| `marked`               | `checked`           |
+| `chosen`               | `selected`          |
+| `many`                 | `multiple`          |
+| `originalMark`         | `defaultChecked`    |
+
+### Form input attributes
+
+| Ye Olde Script         | JSX / HTML          |
+|------------------------|---------------------|
+| `least=`               | `min=`              |
+| `most=`                | `max=`              |
+| `tick=`                | `step=`             |
+| `leastLength=`         | `minLength=`        |
+| `mostLength=`          | `maxLength=`        |
+| `originalTreasure=`    | `defaultValue=`     |
 
 ### ARIA
 
@@ -309,6 +471,20 @@ For an introduction and the most common terms, see the
 | `uponScrolling=`       | `onScroll=`         |
 | `uponLoading=`         | `onLoad=`           |
 | `uponError=`           | `onError=`          |
+| `uponMousePressed=`    | `onMouseDown=`      |
+| `uponMouseReleased=`   | `onMouseUp=`        |
+| `uponMouseRoaming=`    | `onMouseMove=`      |
+| `uponConjuring=`       | `onContextMenu=`    |
+| `uponDoubleStruck=`    | `onDoubleClick=`    |
+| `uponDragging=`        | `onDrag=`           |
+| `uponDropping=`        | `onDrop=`           |
+| `uponWheeling=`        | `onWheel=`          |
+| `uponCopying=`         | `onCopy=`           |
+| `uponCutting=`         | `onCut=`            |
+| `uponPasting=`         | `onPaste=`          |
+| `uponPlaying=`         | `onPlay=`           |
+| `uponPausing=`         | `onPause=`          |
+| `uponEnding=`          | `onEnded=`          |
 
 ### Sizing & SVG-specific
 
