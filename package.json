@@ -68,7 +68,11 @@
           ".yeolde",
           ".ye"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./assets/yeolde_ye_logo.png",
+          "dark": "./assets/yeolde_ye_logo.png"
+        }
       },
       {
         "id": "yeoldescript-ts",
@@ -79,7 +83,11 @@
         "extensions": [
           ".parchment"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./assets/parchment_logo.png",
+          "dark": "./assets/parchment_logo.png"
+        }
       },
       {
         "id": "yeoldescript-tsx",
@@ -92,7 +100,11 @@
           ".scrollx",
           ".illuminated"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./assets/scrollx_illuminated_logo.png",
+          "dark": "./assets/scrollx_illuminated_logo.png"
+        }
       }
     ],
     "grammars": [
